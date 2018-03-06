@@ -13,7 +13,7 @@ namespace LargeSort.Shared.Implementations
         /// <see cref="IFileIO.CreateDirectory(string)"/>
         public void CreateDirectory(string directoryPath)
         {
-            throw new NotImplementedException();
+            Directory.CreateDirectory(directoryPath);
         }
 
         /// <see cref="IFileIO.GetDirectoryFromFilePath(string)"/>

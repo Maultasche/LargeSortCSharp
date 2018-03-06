@@ -115,5 +115,75 @@ namespace LargeSort.Shared.Test
                 Assert.That(directory, Is.EqualTo(expectedDirectory));
             }
         }
+
+        /// <summary>
+        /// Contains tests for the CreateDirectory method
+        /// </summary>
+        [TestFixture]
+        public class CreateDirectoryTests : FileIOTestBase
+        {
+            /// <summary>
+            /// Tests creating a subdirectory
+            /// </summary>
+            [Test]
+            public void TestCreateSubDirectory()
+            {
+                const string TestDirectory = "files";
+
+                TestWithDirectory(TestDirectory);
+            }
+
+            /// <summary>
+            /// Tests creating a subdirectory in an existing subdirectory
+            /// </summary>
+            [Test]
+            public void TestCreateSubDirectoryOfExistingSubDirectory()
+            {
+                const string SubDirectory = "sub";
+                const string TestDirectory = "sub/tree";
+
+                //Create the subdirectory
+                Directory.CreateDirectory(SubDirectory);
+
+                //Run the tests
+                TestWithDirectory(TestDirectory);
+
+                //Delete the subdirectory
+                Directory.Delete(SubDirectory);
+            }
+
+            /// <summary>
+            /// Tests creating a subdirectory in a non-existent subdirectory
+            /// </summary>
+            [Test]
+            public void TestCreateSubDirectoryOfNonExistentSubDirectory()
+            {
+                const string SubDirectory = "sub";
+                const string TestDirectory = "sub/tree";
+
+                TestWithDirectory(TestDirectory);
+
+                //Delete the subdirectory
+                Directory.Delete(SubDirectory);
+            }
+
+            /// <summary>
+            /// Tests the CreateDirectory method
+            /// </summary>
+            /// <param name="testDirectory">The directory to be created</param>
+            private void TestWithDirectory(string testDirectory)
+            {
+                IFileIO fileIO = new FileIO();
+
+                //Create the directory
+                fileIO.CreateDirectory(testDirectory);
+
+                //Verify that the directory exists
+                Assert.That(Directory.Exists(testDirectory), Is.True);
+
+                //Delete the directory
+                Directory.Delete(testDirectory, true);
+            }
+        }
     }
 }
