@@ -1,0 +1,12 @@
+{
+  "name": "LargeSortCSharp",
+  "version": "1.0.0",
+  "description": "The LargeSort problem implemented in C#",
+  "main": "index.js",
+  "repository": "https://github.com/Maultasche/LargeSortCSharp.git",
+  "author": "Kevin Peter",
+  "license": "MIT",
+  "scripts": {
+	"gen": "dotnet run --project ./IntGen"
+  }
+}
