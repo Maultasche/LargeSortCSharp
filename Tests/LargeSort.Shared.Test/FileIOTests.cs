@@ -185,5 +185,100 @@ namespace LargeSort.Shared.Test
                 Directory.Delete(testDirectory, true);
             }
         }
+
+        /// <summary>
+        /// Contains tests for the CreateFile method
+        /// </summary>
+        [TestFixture]
+        public class CreateFileTests : FileIOTestBase
+        {
+            /// <summary>
+            /// Tests creating a file in the same directory
+            /// </summary>
+            [Test]
+            public void TestCreateFileInSameDirectory()
+            {                
+                const string TestFile = "testFile.txt";
+
+                //Run the tests
+                TestWithFile(TestFile);
+            }
+
+            /// <summary>
+            /// Tests creating a file in a subdirectory
+            /// </summary>
+            [Test]
+            public void TestCreateFileInSubDirectory()
+            {
+                const string SubDirectory = "sub";
+                const string TestFile = "sub/testFile.txt";
+
+                //Create the subdirectory
+                Directory.CreateDirectory(SubDirectory);
+
+                //Run the tests
+                TestWithFile(TestFile);
+
+                //Delete the subdirectory
+                Directory.Delete(SubDirectory);
+
+                //Verify that the subdirectory was deleted
+                Assert.That(Directory.Exists(SubDirectory), Is.False);
+            }
+
+            /// <summary>
+            /// Tests creating a file when that file already exists
+            /// </summary>
+            [Test]
+            public void TestCreateFileAlreadyExists()
+            {
+                const string SubDirectory = "sub";
+                const string TestFile = "sub/testFile.txt";
+
+                //Create the subdirectory
+                Directory.CreateDirectory(SubDirectory);
+
+                //Create the file in the subdirectory
+                IFileIO fileIO = new FileIO();
+                FileStream fileStream = fileIO.CreateFile(TestFile);
+                fileStream.Close();
+
+                //Verify that the file was created
+                Assert.That(File.Exists(TestFile), Is.True);
+
+                //Run the tests
+                TestWithFile(TestFile);
+
+                //Delete the subdirectory
+                Directory.Delete(SubDirectory);
+
+                //Verify that the subdirectory was deleted
+                Assert.That(Directory.Exists(SubDirectory), Is.False);
+            }
+
+            /// <summary>
+            /// Tests the CreateFile method
+            /// </summary>
+            /// <param name="testFile">The file to be created</param>
+            private void TestWithFile(string testFile)
+            {
+                IFileIO fileIO = new FileIO();
+
+                //Create the file
+                FileStream fileStream = fileIO.CreateFile(testFile);
+
+                //Close the file stream
+                fileStream.Close();
+
+                //Verify that the file exists
+                Assert.That(File.Exists(testFile), Is.True);
+
+                //Delete the file
+                File.Delete(testFile);
+
+                //Verify that the file has been deleted
+                Assert.That(File.Exists(testFile), Is.False);
+            }
+        }
     }
 }

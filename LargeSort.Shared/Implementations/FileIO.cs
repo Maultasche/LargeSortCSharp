@@ -16,6 +16,12 @@ namespace LargeSort.Shared.Implementations
             Directory.CreateDirectory(directoryPath);
         }
 
+        /// <see cref="IFileIO.CreateFile(string)"/>
+        public FileStream CreateFile(string filePath)
+        {
+            return File.Create(filePath);
+        }
+
         /// <see cref="IFileIO.GetDirectoryFromFilePath(string)"/>
         public string GetDirectoryFromFilePath(string filePath)
         {

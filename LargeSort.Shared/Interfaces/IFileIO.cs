@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace LargeSort.Shared.Interfaces
 {
@@ -17,6 +16,15 @@ namespace LargeSort.Shared.Interfaces
         /// </remarks>
         /// <param name="directoryPath">The path to the directory to be created</param>
         void CreateDirectory(string directoryPath);
+
+        /// <summary>
+        /// Creates a file
+        /// </summary>
+        /// <remarks>
+        /// If the file already exists, it is overwritten
+        /// </remarks>
+        /// <param name="filePath">The path to the file to be created</param>
+        FileStream CreateFile(string filePath);
 
         /// <summary>
         /// Returns the directory portion of a file path
