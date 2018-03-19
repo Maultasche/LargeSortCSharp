@@ -27,5 +27,10 @@ namespace LargeSort.Shared.Implementations
         {
             return Path.GetDirectoryName(filePath);
         }
+
+        public void WriteIntegerToStream(StreamWriter integerStreamWriter, int integer)
+        {
+            integerStreamWriter.WriteLine(integer);
+        }
     }
 }

@@ -35,5 +35,17 @@ namespace LargeSort.Shared.Interfaces
         /// <param name="filePath">A path to a file</param>
         /// <returns>The directory portion of the file path</returns>
         string GetDirectoryFromFilePath(string filePath);
+
+        /// <summary>
+        /// Writes an integer to a stream using a specific StreamWriter
+        /// </summary>
+        /// <remarks>
+        /// The integer will be converted to its text form and a newline character will be written after the
+        /// integer.
+        /// This method assumes that integerStreamWriter != null.
+        /// </remarks>
+        /// <param name="integerStreamWriter">The stream writer to use to write an integer</param>
+        /// <param name="integer">The integer to be written</param>
+        void WriteIntegerToStream(StreamWriter integerStreamWriter, int integer);
     }
 }

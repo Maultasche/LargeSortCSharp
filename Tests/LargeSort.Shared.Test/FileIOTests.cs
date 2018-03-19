@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 
+using Moq;
 using NUnit.Framework;
 
 using LargeSort.Shared.Implementations;
@@ -278,6 +279,35 @@ namespace LargeSort.Shared.Test
 
                 //Verify that the file has been deleted
                 Assert.That(File.Exists(testFile), Is.False);
+            }
+        }
+
+        /// <summary>
+        /// Contains tests for the WriteIntegerToStream method
+        /// </summary>
+        [TestFixture]
+        public class WriteIntegerToStreamTests : FileIOTestBase
+        {
+            /// <summary>
+            /// Tests writing an integer to a stream
+            /// </summary>
+            [Test]
+            public void TestWriteIntegerToStream()
+            {
+                const int TestInteger = 24;
+
+                //Create a mock stream writer
+                MemoryStream memoryStream = new MemoryStream();
+                Mock<StreamWriter> mockStreamWriter = new Mock<StreamWriter>(memoryStream);
+
+                //Write an integer to the stream writer
+                IFileIO fileIO = new FileIO();
+
+                fileIO.WriteIntegerToStream(mockStreamWriter.Object, TestInteger);
+
+                //Verify that the correct line was written
+                mockStreamWriter.Verify(mock => mock.WriteLine(It.Is<int>(integer => integer == TestInteger)),
+                    Times.Once);
             }
         }
     }
