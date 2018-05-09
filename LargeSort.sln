@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LargeSort.Shared", "LargeSo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{470C00A3-816F-46CD-AD06-EC3F8067D2E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LargeSort.Shared.Test", "Tests\LargeSort.Shared.Test\LargeSort.Shared.Test.csproj", "{8C693810-C5F7-4BE1-8305-C61D5B1A2AF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LargeSort.Shared.Test", "Tests\LargeSort.Shared.Test\LargeSort.Shared.Test.csproj", "{8C693810-C5F7-4BE1-8305-C61D5B1A2AF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntGen.Test", "Tests\IntGen.Test\IntGen.Test.csproj", "{FE21E7F7-2009-44CE-A12C-5CBCEB96ECAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,12 +31,17 @@ Global
 		{8C693810-C5F7-4BE1-8305-C61D5B1A2AF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C693810-C5F7-4BE1-8305-C61D5B1A2AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C693810-C5F7-4BE1-8305-C61D5B1A2AF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE21E7F7-2009-44CE-A12C-5CBCEB96ECAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE21E7F7-2009-44CE-A12C-5CBCEB96ECAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE21E7F7-2009-44CE-A12C-5CBCEB96ECAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE21E7F7-2009-44CE-A12C-5CBCEB96ECAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8C693810-C5F7-4BE1-8305-C61D5B1A2AF3} = {470C00A3-816F-46CD-AD06-EC3F8067D2E4}
+		{FE21E7F7-2009-44CE-A12C-5CBCEB96ECAA} = {470C00A3-816F-46CD-AD06-EC3F8067D2E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {57E6D3FD-AF94-4879-97C7-0EA5C6ED47C9}
