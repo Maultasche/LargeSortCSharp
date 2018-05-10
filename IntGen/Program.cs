@@ -42,7 +42,7 @@ namespace IntGen
 
             serviceCollection.AddSingleton<IFileIO, FileIO>();
             serviceCollection.AddSingleton<IRandomIntegerGenerator, RandomIntegerGenerator>();
-            serviceCollection.AddSingleton<IIntegerFileGenerator, IntegerFileGenerator>();
+            serviceCollection.AddSingleton<IIntegerFileCreator, IntegerFileCreator>();
 
             return serviceCollection.BuildServiceProvider();
         }

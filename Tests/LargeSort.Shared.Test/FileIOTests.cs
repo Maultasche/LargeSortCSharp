@@ -241,7 +241,7 @@ namespace LargeSort.Shared.Test
 
                 //Create the file in the subdirectory
                 IFileIO fileIO = new FileIO();
-                FileStream fileStream = fileIO.CreateFile(TestFile);
+                Stream fileStream = fileIO.CreateFile(TestFile);
                 fileStream.Close();
 
                 //Verify that the file was created
@@ -266,7 +266,7 @@ namespace LargeSort.Shared.Test
                 IFileIO fileIO = new FileIO();
 
                 //Create the file
-                FileStream fileStream = fileIO.CreateFile(testFile);
+                Stream fileStream = fileIO.CreateFile(testFile);
 
                 //Close the file stream
                 fileStream.Close();

@@ -18,8 +18,6 @@ namespace IntGen.Test
         [TestFixture]
         public class CreateIntegerGeneratorTests
         {
-            //private static uint[] integerCounts = new uint[] { 0, 1, 10, 100, 1000, 10000, 100000 };
-
             /// <summary>
             /// Tests the random integer count
             /// </summary>

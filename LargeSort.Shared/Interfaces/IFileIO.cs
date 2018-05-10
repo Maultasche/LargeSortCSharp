@@ -24,7 +24,8 @@ namespace LargeSort.Shared.Interfaces
         /// If the file already exists, it is overwritten
         /// </remarks>
         /// <param name="filePath">The path to the file to be created</param>
-        FileStream CreateFile(string filePath);
+        /// <returns>A stream pointing to the file</returns>
+        Stream CreateFile(string filePath);
 
         /// <summary>
         /// Returns the directory portion of a file path

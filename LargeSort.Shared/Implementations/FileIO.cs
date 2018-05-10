@@ -17,7 +17,7 @@ namespace LargeSort.Shared.Implementations
         }
 
         /// <see cref="IFileIO.CreateFile(string)"/>
-        public FileStream CreateFile(string filePath)
+        public Stream CreateFile(string filePath)
         {
             return File.Create(filePath);
         }
