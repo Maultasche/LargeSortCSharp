@@ -31,7 +31,7 @@ namespace IntGen
         /// Get or sets the number of integers to be generated
         /// </summary>
         [Option('c', "count", Required = true, HelpText = "The number of integers to generate")]        
-        public int Count { get; set; }
+        public uint Count { get; set; }
 
         /// <summary>
         /// Gets or sets the lower bound (inclusive) of the range of integers to be generated

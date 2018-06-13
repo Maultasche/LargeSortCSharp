@@ -286,3 +286,8 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# Ignore the data and output directories, since that's where we've been generating
+# input and output files
+data/
+output/

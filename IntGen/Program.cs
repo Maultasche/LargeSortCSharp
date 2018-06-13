@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 using CommandLine;
@@ -49,7 +50,19 @@ namespace IntGen
 
         static void GenerateIntegers(CommandLineOptions options)
         {
-            Console.WriteLine(Directory.GetCurrentDirectory());
+            //Get an instance of the integer file creator
+            IIntegerFileCreator integerFileCreator = serviceProvider.GetService<IIntegerFileCreator>();
+
+            //Get an instance of the random integer generator
+            IRandomIntegerGenerator randomIntegerGenerator = serviceProvider.GetService<IRandomIntegerGenerator>();
+
+            //Create the random integers. The IEnumerable is actually a generator, so it generates them one at a time as
+            //it is enumerated rather than a whole bunch at once
+            IEnumerable<int> randomIntegers = randomIntegerGenerator.CreateIntegerGenerator(options.LowerBound, 
+                options.UpperBound, options.Count);
+
+            //Create the integer file with the randomly-generated integers
+            integerFileCreator.CreateIntegerTextFile(randomIntegers, options.FilePath);
         }
 
         static void OutputParsedOptions(CommandLineOptions options)

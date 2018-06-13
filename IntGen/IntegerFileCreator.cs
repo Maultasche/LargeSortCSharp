@@ -25,6 +25,9 @@ namespace IntGen
         /// <see cref="IIntegerFileCreator.CreateIntegerTextFile(IEnumerable{int}, string)"/>
         public void CreateIntegerTextFile(IEnumerable<int> integers, string filePath)
         {
+            //Create the directory the file will be living in, if it does not already exist
+            fileIO.CreateDirectory(fileIO.GetDirectoryFromFilePath(filePath));
+
             //Create the file
             using (Stream fileStream = fileIO.CreateFile(filePath))
             {
@@ -38,7 +41,6 @@ namespace IntGen
                     }
                 }
             }
-
         }
     }
 }
