@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{470C00A3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LargeSort.Shared.Test", "Tests\LargeSort.Shared.Test\LargeSort.Shared.Test.csproj", "{8C693810-C5F7-4BE1-8305-C61D5B1A2AF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntGen.Test", "Tests\IntGen.Test\IntGen.Test.csproj", "{FE21E7F7-2009-44CE-A12C-5CBCEB96ECAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntGen.Test", "Tests\IntGen.Test\IntGen.Test.csproj", "{FE21E7F7-2009-44CE-A12C-5CBCEB96ECAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
