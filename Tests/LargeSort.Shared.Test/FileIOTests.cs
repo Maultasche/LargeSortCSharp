@@ -188,6 +188,138 @@ namespace LargeSort.Shared.Test
         }
 
         /// <summary>
+        /// Contains tests for the CreateFileStreamReader method
+        /// </summary>
+        [TestFixture]
+        public class CreateFileStreamReaderTests : FileIOTestBase
+        {
+            /// <summary>
+            /// Tests creating a read stream in an existing file in the same directory
+            /// </summary>
+            [Test]
+            public void TestReadFileInSameDirectory()
+            {
+                const string TestFile = "testFile.txt";
+                const string FileContents = "This is a test file.";
+
+                //Create the test file
+                CreateTestFile(TestFile, FileContents);
+
+                //Run the test
+                TestWithFile(TestFile, FileContents, fileExists: true);
+
+                //Delete the test file
+                File.Delete(TestFile);
+            }
+
+            /// <summary>
+            /// Tests creating a read stream for a file in a subdirectory
+            /// </summary>
+            [Test]
+            public void TestReadFileInSubDirectory()
+            {
+                const string SubDirectory = "sub";
+                const string TestFile = "sub/testFile.txt";
+                const string FileContents = "This is a test file.";
+
+                //Create the subdirectory
+                Directory.CreateDirectory(SubDirectory);
+
+                //Create the test file
+                CreateTestFile(TestFile, FileContents);
+
+                //Run the test
+                TestWithFile(TestFile, FileContents, fileExists: true);
+
+                //Delete the test file
+                File.Delete(TestFile);
+
+                //Delete the subdirectory
+                Directory.Delete(SubDirectory);
+
+                //Verify that the subdirectory was deleted
+                Assert.That(Directory.Exists(SubDirectory), Is.False);
+            }
+
+            /// <summary>
+            /// Tests creating a read stream for a non-existent file
+            /// </summary>
+            [Test]
+            public void TestReadNonExistentFile()
+            {
+                const string NonExistentFile = "nonExistentFile.txt";
+
+                //Run the test
+                TestWithFile(NonExistentFile, fileExists: false);
+            }
+
+            /// <summary>
+            /// Creates a test file with the given contents
+            /// </summary>
+            /// <param name="testFile">A path to the file to be created</param>
+            /// <param name="contents">The contents to be written to the file</param>
+            private void CreateTestFile(string testFile, string contents)
+            {
+                IFileIO fileIO = new FileIO();
+                
+                //Create the file
+                using (Stream fileStream = fileIO.CreateFile(testFile))
+                {
+                    //Create a stream write from the file stream
+                    StreamWriter textWriter = new StreamWriter(fileStream);
+
+                    //Write the contents to the file
+                    textWriter.Write(contents);
+
+                    //Close the file stream
+                    textWriter.Close();
+                }
+            }
+
+            /// <summary>
+            /// Tests the CreateFileStreamReader method
+            /// </summary>
+            /// <param name="testFile">The file to be read</param>
+            private void TestWithFile(string testFile, string expectedFileContents = null, bool fileExists = false)
+            {
+                IFileIO fileIO = new FileIO();
+
+                bool fileNotFoundExceptionThrown = false;
+
+                try
+                {
+                    //Create a stream reader for the test file
+                    using (StreamReader fileStreamReader = fileIO.CreateFileStreamReader(testFile))
+                    {
+                        //Read the contents of the file
+                        string actualContents = fileStreamReader.ReadToEnd();
+
+                        //Verify that we got the correct data
+                        Assert.That(actualContents, Is.EqualTo(expectedFileContents));
+
+                        fileStreamReader.Close();
+                    }
+                }
+                catch(FileNotFoundException)
+                {
+                    fileNotFoundExceptionThrown = true;
+
+                    //If the file exists, but it was not found, rethrown the exception to fail the test
+                    if(fileExists)
+                    {
+                        throw;
+                    }
+                }
+
+                //If the file does not exist, assert that a FileNotFoundException was thrown
+                if(!fileExists)
+                {
+                    Assert.That(fileNotFoundExceptionThrown, Is.True);
+                }
+            }
+        }
+
+        /// <summary>
         /// Contains tests for the CreateFile method
         /// </summary>
         [TestFixture]
@@ -279,6 +411,103 @@ namespace LargeSort.Shared.Test
 
                 //Verify that the file has been deleted
                 Assert.That(File.Exists(testFile), Is.False);
+            }
+        }
+
+        /// <summary>
+        /// Contains tests for the FileExists method
+        /// </summary>
+        [TestFixture]
+        public class FileExistsTests : FileIOTestBase
+        {
+            /// <summary>
+            /// Tests if a file exists when that file actually does exist
+            /// </summary>
+            [Test]
+            public void TestFileExistsInSameDirectory()
+            {
+                const string TestFile = "testFile.txt";
+                const string FileContents = "This is a test file.";
+
+                IFileIO fileIO = new FileIO();
+
+                //Create the test file
+                CreateTestFile(TestFile, FileContents);
+
+                //Verify that the file exists
+                Assert.That(fileIO.FileExists(TestFile), Is.True);
+
+                //Delete the test file
+                File.Delete(TestFile);
+            }
+
+            /// <summary>
+            /// Tests if a file exists when that file actually does exist in a subdirectory
+            /// </summary>
+            [Test]
+            public void TestFileExistsInSubDirectory()
+            {
+                const string SubDirectory = "sub";
+                const string TestFile = "sub/testFile.txt";
+                const string FileContents = "This is a test file.";
+
+                //Create the subdirectory
+                Directory.CreateDirectory(SubDirectory);
+
+                //Create the test file
+                IFileIO fileIO = new FileIO();
+
+                //Create the test file
+                CreateTestFile(TestFile, FileContents);
+
+                //Verify that the file exists
+                Assert.That(fileIO.FileExists(TestFile), Is.True);
+
+                //Delete the test file
+                File.Delete(TestFile);
+
+                //Delete the subdirectory
+                Directory.Delete(SubDirectory);
+
+                //Verify that the subdirectory was deleted
+                Assert.That(Directory.Exists(SubDirectory), Is.False);
+            }
+
+            /// <summary>
+            /// Tests creating a read stream for a non-existent file
+            /// </summary>
+            [Test]
+            public void TestFileExistsNonExistentFile()
+            {
+                const string NonExistentFile = "nonExistentFile.txt";
+
+                IFileIO fileIO = new FileIO();
+
+                //Verify that the non-existent file does not exists
+                Assert.That(fileIO.FileExists(NonExistentFile), Is.False);
+            }
+
+            /// <summary>
+            /// Creates a test file with the given contents
+            /// </summary>
+            /// <param name="testFile">A path to the file to be created</param>
+            /// <param name="contents">The contents to be written to the file</param>
+            private void CreateTestFile(string testFile, string contents)
+            {
+                IFileIO fileIO = new FileIO();
+
+                //Create the file
+                using (Stream fileStream = fileIO.CreateFile(testFile))
+                {
+                    //Create a stream write from the file stream
+                    StreamWriter textWriter = new StreamWriter(fileStream);
+
+                    //Write the contents to the file
+                    textWriter.WriteLine(contents);
+
+                    //Close the file stream
+                    textWriter.Close();
+                }
             }
         }
 
