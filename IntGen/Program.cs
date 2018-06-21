@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
@@ -66,9 +65,9 @@ namespace IntGen
         static void UpdateProgressBar(ProgressBar progressBar, int generatedIntegers)
         {
             //If we update for every integer, and large numbers of integers are being generated, 
-            //the application will more time updating the progress bar than it will doing its real work
+            //the application will spend more time updating the progress bar than it will doing its real work
             //So the solution is to update the progress bar every 1% of generated integers.
-            //For a million integers, this reduced update rate reduced the runtime from over 9 minutes 
+            //For a million integers, this change reduced the runtime from over 9 minutes 
             //to under a second
 
             int tickSize = progressBar.MaxTicks / 100;
@@ -80,8 +79,7 @@ namespace IntGen
                 if (generatedIntegers == progressBar.MaxTicks)
                 {
                     progressBar.Message = "Integer Generation Complete";
-                }
-                    
+                }          
             }
         }
 
@@ -117,20 +115,12 @@ namespace IntGen
             int integersGenerated = 0;
 
 
-            //When an integer is enumerated, update the progress bar
+            //When an integer is enumerated, update the integer generation status
             randomIntegers = randomIntegers.Select(integer =>
             {
                 integersGenerated++;
 
-                //if(integersGenerated == options.Count)
-                //{
-                    updateIntegerGenerationStatus(integersGenerated);
-                //}
-                //else
-                //{
-                //    Task.Run(() => updateIntegerGenerationStatus(integersGenerated));
-                //}
-                
+                updateIntegerGenerationStatus(integersGenerated);              
 
                 return integer;
             });

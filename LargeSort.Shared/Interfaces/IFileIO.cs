@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace LargeSort.Shared.Interfaces
@@ -26,6 +27,23 @@ namespace LargeSort.Shared.Interfaces
         /// <param name="filePath">The path to the file to be created</param>
         /// <returns>A stream pointing to the file</returns>
         Stream CreateFile(string filePath);
+
+        /// <summary>
+        /// Creates a stream reader that reads from a particular file
+        /// </summary>
+        /// <remarks>
+        /// This method assumes that the file exists.
+        /// </remarks>
+        /// <param name="filePath">The path to the file to be read</param>
+        /// <returns>A stream reader that can read from the file</returns>
+        StreamReader CreateFileStreamReader(string filePath);
+
+        /// <summary>
+        /// Indicates if a file exists
+        /// </summary>
+        /// <param name="filePath">The path to a file</param>
+        /// <returns>true if the file exists, otherwise false</returns>
+        bool FileExists(string filePath);
 
         /// <summary>
         /// Returns the directory portion of a file path

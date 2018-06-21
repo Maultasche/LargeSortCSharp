@@ -22,6 +22,18 @@ namespace LargeSort.Shared.Implementations
             return File.Create(filePath);
         }
 
+        /// <see cref="IFileIO.CreateFileStreamReader(string)"/>
+        public StreamReader CreateFileStreamReader(string filePath)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <see cref="IFileIO.FileExists(string)"/>
+        public bool FileExists(string filePath)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <see cref="IFileIO.GetDirectoryFromFilePath(string)"/>
         public string GetDirectoryFromFilePath(string filePath)
         {
