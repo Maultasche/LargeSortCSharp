@@ -10,10 +10,11 @@ namespace IntGen
     /// </summary>
     public class RandomIntegerGenerator : IRandomIntegerGenerator
     {
-        /// <see cref="IRandomIntegerGenerator.CreateIntegerGenerator(int, int, uint)"/>
-        public IEnumerable<int> CreateIntegerGenerator(int lowerBound, int upperBound, uint count)
+        /// <see cref="IRandomIntegerGenerator.CreateIntegerGenerator(int, int, int)"/>
+        public IEnumerable<int> CreateIntegerGenerator(int lowerBound, int upperBound, int count)
         {
             Debug.Assert(lowerBound <= upperBound);
+            Debug.Assert(count >= 0);
 
             //We don't need crypto-strength randomness, so the pseudo-random number generator is just fine
             Random rng = new Random();

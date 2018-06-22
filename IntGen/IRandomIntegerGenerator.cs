@@ -13,7 +13,7 @@ namespace IntGen
         /// Creates a generator that generates random integers
         /// </summary>
         /// <remarks>
-        /// This method assumes that lowerBound &lt;= upperBound
+        /// This method assumes that lowerBound &lt;= upperBound and that count &gt;= 0
         /// </remarks>
         /// <param name="lowerBound">The lower bound (inclusive) of the range that the generated
         /// integers will fall under</param>
@@ -21,6 +21,6 @@ namespace IntGen
         /// integers will fall under</param>
         /// <param name="count">The number of integers to be generated</param>
         /// <returns>An enumerable that will generate random integers as it is iterated over</returns>
-        IEnumerable<int> CreateIntegerGenerator(int lowerBound, int upperBound, uint count);
+        IEnumerable<int> CreateIntegerGenerator(int lowerBound, int upperBound, int count);
     }
 }

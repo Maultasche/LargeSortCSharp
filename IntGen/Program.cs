@@ -110,7 +110,7 @@ namespace IntGen
             //Create the random integers. The IEnumerable is actually a generator, so it generates them one at a time as
             //it is enumerated rather than a whole bunch at once
             IEnumerable<int> randomIntegers = randomIntegerGenerator.CreateIntegerGenerator(options.LowerBound, 
-                options.UpperBound, options.Count);
+                options.UpperBound, (int)options.Count);
 
             int integersGenerated = 0;
 

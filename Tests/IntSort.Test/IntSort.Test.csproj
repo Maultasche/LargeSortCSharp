@@ -2,9 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <ApplicationIcon />
-    <OutputType>Library</OutputType>
-    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\LargeSort.Shared\LargeSort.Shared.csproj" />
+    <ProjectReference Include="..\..\IntSort\IntSort.csproj" />
   </ItemGroup>
 
 </Project>

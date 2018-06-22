@@ -93,8 +93,11 @@ namespace IntGen.Test
             /// <param name="lowerBound">The lower bounds (inclusive) of the integers to be generated</param>
             /// <param name="upperBound">The upper bounds (inclusive) of the integers to be generated</param>
             /// <param name="count">The number of integers to be generated</param>
-            private void TestRandomIntegerGenerator(int lowerBound, int upperBound, uint count)
+            private void TestRandomIntegerGenerator(int lowerBound, int upperBound, int count)
             {
+                Assert.That(count, Is.GreaterThanOrEqualTo(0));
+                Assert.That(lowerBound, Is.AtMost(upperBound));
+
                 IRandomIntegerGenerator randomIntGenerator = new RandomIntegerGenerator();
 
                 //Create the random integer generator

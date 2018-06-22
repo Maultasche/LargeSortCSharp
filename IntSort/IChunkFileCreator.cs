@@ -4,7 +4,10 @@ using System.Text;
 
 namespace IntSort
 {
-    interface IChunkFileCreator
+    /// <summary>
+    /// The interface for chunk file creation functionality
+    /// </summary>
+    public interface IChunkFileCreator
     {
         /// <summary>
         /// Creates one or more chunk files where each file contains a chunk of sorted integers
