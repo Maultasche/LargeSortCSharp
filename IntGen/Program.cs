@@ -6,8 +6,7 @@ using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 using ShellProgressBar;
 
-using LargeSort.Shared.Interfaces;
-using LargeSort.Shared.Implementations;
+using LargeSort.Shared;
 
 namespace IntGen
 {

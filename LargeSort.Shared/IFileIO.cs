@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace LargeSort.Shared.Interfaces
+namespace LargeSort.Shared
 {
     /// <summary>
     /// Provides the interface to file I/O functionality

@@ -3,8 +3,7 @@
 using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 
-using LargeSort.Shared.Interfaces;
-using LargeSort.Shared.Implementations;
+using LargeSort.Shared;
 
 namespace IntSort
 {
@@ -46,8 +45,9 @@ namespace IntSort
             IServiceCollection serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton<IFileIO, FileIO>();
-            //serviceCollection.AddSingleton<IRandomIntegerGenerator, RandomIntegerGenerator>();
-            //serviceCollection.AddSingleton<IIntegerFileCreator, IntegerFileCreator>();
+            serviceCollection.AddSingleton<IIntegerFileCreator, IntegerFileCreator>();
+            serviceCollection.AddSingleton<IChunkStreamCreator, ChunkStreamCreator>();
+            serviceCollection.AddSingleton<IChunkFileCreator, ChunkFileCreator>();
 
             return serviceCollection.BuildServiceProvider();
         }

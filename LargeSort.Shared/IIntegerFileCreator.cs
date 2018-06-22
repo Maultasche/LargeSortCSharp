@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IntGen
+namespace LargeSort.Shared
 {
     /// <summary>
     /// Defines the functionality for generating an integer file

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 
-using LargeSort.Shared.Interfaces;
-
-namespace LargeSort.Shared.Implementations
+namespace LargeSort.Shared
 {
     /// <summary>
     /// Implements file I/O functionality

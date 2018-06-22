@@ -12,6 +12,10 @@ namespace IntSort
         /// <summary>
         /// Creates one or more chunk files where each file contains a chunk of sorted integers
         /// </summary>
+        /// <remarks>
+        /// This method assumes that sortedIntegerChunks != null.
+        /// If sortedIntegerChunks is empty, no chunk files will be created.
+        /// </remarks>
         /// <param name="sortedIntegerChunks">A collection of integer chunks, where each chunk has its integers
         /// sorted in ascending order</param>
         /// <param name="chunkFileTemplate">The file template of the chunk files to be generated. The file template

@@ -4,8 +4,7 @@ using System.IO;
 using Moq;
 using NUnit.Framework;
 
-using LargeSort.Shared.Implementations;
-using LargeSort.Shared.Interfaces;
+using LargeSort.Shared;
 
 namespace LargeSort.Shared.Test
 {

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-using LargeSort.Shared.Interfaces;
-
-namespace IntGen
+namespace LargeSort.Shared
 {
     /// <summary>
     /// Implements the functionality for generating an integer file
@@ -39,6 +37,9 @@ namespace IntGen
                     {
                         fileIO.WriteIntegerToStream(fileStreamWriter, integer);
                     }
+
+                    //Flush the stream writer
+                    fileStreamWriter.Flush();
                 }
             }
         }
