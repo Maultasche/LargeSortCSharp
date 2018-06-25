@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 using LargeSort.Shared;
 
@@ -26,7 +28,24 @@ namespace IntSort
         public List<string> CreateChunkFiles(IEnumerable<List<int>> sortedIntegerChunks, string chunkFileTemplate, 
             string outputPath)
         {
-            throw new NotImplementedException();
+            List<string> chunkFiles = new List<string>();
+
+            int chunkNum = 1;
+
+            sortedIntegerChunks.ToList().ForEach(chunk =>
+            {
+                //Create the file name for this chunk
+                string chunkFileName = string.Format(chunkFileTemplate, chunkNum);
+
+                //Create the chunk file containing the chunk
+                integerFileCreator.CreateIntegerTextFile(chunk, Path.Combine(outputPath, chunkFileName));
+
+                chunkFiles.Add(chunkFileName);
+
+                chunkNum++;
+            });
+
+            return chunkFiles;
         }
     }
 }
