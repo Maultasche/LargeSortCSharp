@@ -124,10 +124,49 @@ namespace IntSort.Test
             }
 
             /// <summary>
+            /// Tests the update progress method callback when creating chunk files
+            /// </summary>
+            /// <remarks>
+            /// 100 chunks with 10 integers each
+            /// </remarks>
+            [Test]
+            public void TestUpdateProgress()
+            {
+                //We need to track how many times updateProgress is called and what is passed in when it
+                //is called.
+                //This dictionary tracks the calls and what was passed. The key is the the call instance and 
+                //the value is the number of file passed
+                Dictionary<int, int> updateProgressCalls = new Dictionary<int, int>();
+
+                //Keep track of how many times updateProgress has been called
+                int updateProgressCounter = 0;
+
+                Action<int> updateProgress = fileCount =>
+                {
+                    updateProgressCounter++;
+
+                    updateProgressCalls.Add(updateProgressCounter, fileCount);
+                };
+
+                //Create the test data
+                var testChunks = CreateIntegerChunks(numOfChunks: 10, chunkSize: 0);
+
+                //Run the test
+                RunCreateChunkFilesTest(testChunks, updateProgress);
+
+                //Verify that update progress was called once for every chunk and that the file count
+                //passed as a parameter incremented by one each time
+                Assert.That(updateProgressCounter, Is.EqualTo(testChunks.Count));
+
+                updateProgressCalls.ToList().ForEach(updateProgressCall =>
+                    Assert.That(updateProgressCall.Key, Is.EqualTo(updateProgressCall.Value)));                
+            }
+
+            /// <summary>
             /// Runs a test of the CreateChunkFiles method
             /// </summary>
             /// <param name="integerChunks">The integer chunks that are to be written to chunk files</param>
-            private void RunCreateChunkFilesTest(List<List<int>> integerChunks)
+            private void RunCreateChunkFilesTest(List<List<int>> integerChunks, Action<int> updateProgress = null)
             {
                 const string ChunkFileTemplate = "chunkFile{0}.txt";
                 const string OutputDirectory = "output/chunkFiles";
@@ -147,7 +186,7 @@ namespace IntSort.Test
 
                 //Create the integer chunk files
                 List<string> createdChunkFiles = chunkFileCreator.CreateChunkFiles(integerChunks, ChunkFileTemplate, 
-                    OutputDirectory);
+                    OutputDirectory, updateProgress);
 
                 //Verify that the method returned the expected chunk files
                 VerifyCreatedChunkFileNames(createdChunkFiles, ChunkFileTemplate, integerChunks.Count());

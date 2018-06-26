@@ -26,7 +26,7 @@ namespace IntSort
         /// <see cref="IChunkFileCreator.CreateChunkFiles(IEnumerable{List{int}}, string, string)"/>
         /// <returns></returns>
         public List<string> CreateChunkFiles(IEnumerable<List<int>> sortedIntegerChunks, string chunkFileTemplate, 
-            string outputPath)
+            string outputPath, Action<int> updateProgress = null)
         {
             List<string> chunkFiles = new List<string>();
 
@@ -40,7 +40,11 @@ namespace IntSort
                 //Create the chunk file containing the chunk
                 integerFileCreator.CreateIntegerTextFile(chunk, Path.Combine(outputPath, chunkFileName));
 
+                //Add the chunk file name to the collection of chunk files names that will be returned
                 chunkFiles.Add(chunkFileName);
+
+                //If an update progress method was provided, call it
+                updateProgress?.Invoke(chunkNum);
 
                 chunkNum++;
             });
