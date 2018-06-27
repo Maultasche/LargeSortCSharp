@@ -6,7 +6,7 @@ using System.IO;
 namespace IntSort
 {
     /// <summary>
-    /// Implements the integers stream reader functionality
+    /// Implements the functionality for reading from an integer stream
     /// </summary>
     public class IntegerStreamReader : IIntegerStreamReader
     {

@@ -5,7 +5,7 @@ using System.IO;
 namespace IntSort
 {
     /// <summary>
-    /// Defines functionality for reading an integer file
+    /// Defines functionality for reading from an integer stream
     /// </summary>
     public interface IIntegerStreamReader
     {
@@ -14,10 +14,10 @@ namespace IntSort
         /// </summary>
         /// <remarks>
         /// This method assumes that the text stream has a single integer on each line of text.
-        /// This method assumes that streamReader != null.
+        /// This method assumes that textStreamReader != null.
         /// </remarks>
         /// <param name="textStreamReader">The stream reader pointing to a text stream</param>
         /// <returns>An enumerable that will pull integers from the stream one by one</returns>
-        IEnumerable<int> CreateIntegerReaderGenerator(StreamReader testStreamReader);
+        IEnumerable<int> CreateIntegerReaderGenerator(StreamReader textStreamReader);
     }
 }
