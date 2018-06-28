@@ -5,7 +5,7 @@ using System.Linq;
 
 using NUnit.Framework;
 
-using IntSort;
+using SharedTest;
 
 namespace IntSort.Test
 {
@@ -245,7 +245,7 @@ namespace IntSort.Test
                 const int numOfIntegers = 100;
 
                 //Generate the test data
-                List<int> integers = GenerateTestData(numOfIntegers);
+                List<int> integers = TestData.GenerateTestData(numOfIntegers);
 
                 //Calculate the expected chunks
                 List<List<int>> expectedChunks = CalculateExpectedChunks(integers, chunkSize);
@@ -268,7 +268,7 @@ namespace IntSort.Test
                 const int numOfIntegers = 580;
 
                 //Generate the test data
-                List<int> integers = GenerateTestData(numOfIntegers);
+                List<int> integers = TestData.GenerateTestData(numOfIntegers);
 
                 //Calculate the expected chunks
                 List<List<int>> expectedChunks = CalculateExpectedChunks(integers, chunkSize);
@@ -291,7 +291,7 @@ namespace IntSort.Test
                 const int numOfIntegers = 10;
 
                 //Generate the test data
-                List<int> integers = GenerateTestData(numOfIntegers);
+                List<int> integers = TestData.GenerateTestData(numOfIntegers);
 
                 //Calculate the expected chunks
                 List<List<int>> expectedChunks = CalculateExpectedChunks(integers, chunkSize);
@@ -314,7 +314,7 @@ namespace IntSort.Test
                 const int numOfIntegers = 1000000;
 
                 //Generate the test data
-                List<int> integers = GenerateTestData(numOfIntegers);
+                List<int> integers = TestData.GenerateTestData(numOfIntegers);
 
                 //Calculate the expected chunks
                 List<List<int>> expectedChunks = CalculateExpectedChunks(integers, chunkSize);
@@ -436,31 +436,6 @@ namespace IntSort.Test
                 integerStream.Position = 0;
 
                 return integerStream;
-            }
-
-            /// <summary>
-            /// Generates a set of random integers to be used as test data
-            /// </summary>
-            /// <param name="numOfIntegers">The number of integers to generate</param>
-            /// <returns></returns>
-            private List<int> GenerateTestData(int numOfIntegers)
-            {
-                const int lowerBound = 1;
-                const int upperBound = 1000;
-
-                List<int> randomIntegers = new List<int>();
-
-                Random rng = new Random();
-
-                //Precompute the exclusive upper bound. The value passed in is inclusive.
-                int exclusiveUpperBound = upperBound + 1;
-
-                for (int i = 0; i < numOfIntegers; i++)
-                {
-                    randomIntegers.Add(rng.Next(lowerBound, exclusiveUpperBound));
-                }
-
-                return randomIntegers;
             }
         }
     }

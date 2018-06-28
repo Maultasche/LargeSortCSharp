@@ -6,7 +6,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 
-using LargeSort.Shared;
+using SharedTest;
 
 namespace LargeSort.Shared.Test
 {
@@ -63,7 +63,7 @@ namespace LargeSort.Shared.Test
             [Test]
             public void TestIntegerFileCreationRandomIntegers()
             {
-                IEnumerable<int> integers = GenerateTestData(1000);
+                IEnumerable<int> integers = TestData.GenerateTestData(1000);
 
                 RunIntegerFileCreationTest(integers, TestFile);
             }
@@ -129,31 +129,6 @@ namespace LargeSort.Shared.Test
 
                 //Verify that the generated and written integers are equivalent
                 Assert.That(writtenIntegers, Is.EquivalentTo(generatedIntegers));
-            }
-
-            /// <summary>
-            /// Generates a set of random integers to be used as test data
-            /// </summary>
-            /// <param name="numOfIntegers">The number of integers to generate</param>
-            /// <returns></returns>
-            private List<int> GenerateTestData(int numOfIntegers)
-            {
-                const int lowerBound = 1;
-                const int upperBound = 1000;
-
-                List<int> randomIntegers = new List<int>();
-
-                Random rng = new Random();
-
-                //Precompute the exclusive upper bound. The value passed in is inclusive.
-                int exclusiveUpperBound = upperBound + 1;
-
-                for (int i = 0; i < numOfIntegers; i++)
-                {
-                    randomIntegers.Add(rng.Next(lowerBound, exclusiveUpperBound));
-                }
-
-                return randomIntegers;
             }
         }
     }

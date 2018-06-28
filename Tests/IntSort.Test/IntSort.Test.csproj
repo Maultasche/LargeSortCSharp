@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\IntSort\IntSort.csproj" />
+    <ProjectReference Include="..\SharedTest\SharedTest.csproj" />
   </ItemGroup>
 
 </Project>

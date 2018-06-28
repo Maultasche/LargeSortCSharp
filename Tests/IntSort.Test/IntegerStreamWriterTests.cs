@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 using NUnit.Framework;
 
-using IntSort;
+using SharedTest;
 
 namespace IntSort.Test
 {
@@ -27,7 +26,7 @@ namespace IntSort.Test
             public void TestWriteIntegerSmallNumber()
             {
                 //Create the test data
-                List<int> integers = GenerateTestData(10);
+                List<int> integers = TestData.GenerateTestData(10);
 
                 //Run the test
                 RunWriteIntegerTest(integers);
@@ -40,7 +39,7 @@ namespace IntSort.Test
             public void TestWriteIntegerLargeNumber()
             {
                 //Create the test data
-                List<int> integers = GenerateTestData(1000);
+                List<int> integers = TestData.GenerateTestData(1000);
 
                 //Run the test
                 RunWriteIntegerTest(integers);
@@ -53,7 +52,7 @@ namespace IntSort.Test
             public void TestWriteIntegerSingle()
             {
                 //Create the test data
-                List<int> integers = GenerateTestData(1);
+                List<int> integers = TestData.GenerateTestData(1);
 
                 //Run the test
                 RunWriteIntegerTest(integers);
@@ -100,31 +99,6 @@ namespace IntSort.Test
                         });
                     }
                 }
-            }
-
-            /// <summary>
-            /// Generates a set of random integers to be used as test data
-            /// </summary>
-            /// <param name="numOfIntegers">The number of integers to generate</param>
-            /// <returns></returns>
-            private List<int> GenerateTestData(int numOfIntegers)
-            {
-                const int lowerBound = 1;
-                const int upperBound = 1000;
-
-                List<int> randomIntegers = new List<int>();
-
-                Random rng = new Random();
-
-                //Precompute the exclusive upper bound. The value passed in is inclusive.
-                int exclusiveUpperBound = upperBound + 1;
-
-                for (int i = 0; i < numOfIntegers; i++)
-                {
-                    randomIntegers.Add(rng.Next(lowerBound, exclusiveUpperBound));
-                }
-
-                return randomIntegers;
             }
         }
     }

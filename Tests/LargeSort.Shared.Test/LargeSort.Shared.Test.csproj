@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\LargeSort.Shared\LargeSort.Shared.csproj" />
+    <ProjectReference Include="..\SharedTest\SharedTest.csproj" />
   </ItemGroup>
 
 </Project>
