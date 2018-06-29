@@ -7,13 +7,17 @@ namespace IntSort
     /// <summary>
     /// Defines integer file merger functionality
     /// </summary>
-    interface IIntegerFileMerger
+    public interface IIntegerFileMerger
     {
         /// <summary>
         /// Merges a set of integer files into one or more output files
         /// </summary>
         /// <remarks>
-        /// The number of output files = ceiling(number of integer files / mergeCount)
+        /// The number of output files = ceiling(number of integer files / mergeCount).
+        /// This method assumes that integerFiles != null, mergeCount > 0, fileTemplate != null,
+        /// and outputDirectory != null.
+        /// This method also assumes that the integer files exist, the output directory can be created,
+        /// and that files can be written to the output directory.
         /// </remarks>
         /// <param name="integerFiles">Paths to the integer files to be merged</param>
         /// <param name="mergeCount">The number of integer files to merge at a time</param>
