@@ -414,6 +414,112 @@ namespace LargeSort.Shared.Test
         }
 
         /// <summary>
+        /// Contains tests for the DeleteFile method
+        /// </summary>
+        [TestFixture]
+        public class DeleteFileTests : FileIOTestBase
+        {
+            /// <summary>
+            /// Tests creating deleting a file in the same directory
+            /// </summary>
+            [Test]
+            public void TestDeleteFileInSameDirectory()
+            {
+                const string TestFile = "testFile.txt";
+
+                //Run the tests
+                TestWithFile(TestFile);
+            }
+
+            /// <summary>
+            /// Tests deleting a file in a subdirectory
+            /// </summary>
+            [Test]
+            public void TestDeleteFileInSubDirectory()
+            {
+                const string SubDirectory = "sub";
+                const string TestFile = "sub/testFile.txt";
+
+                //Create the subdirectory
+                Directory.CreateDirectory(SubDirectory);
+
+                //Run the tests
+                TestWithFile(TestFile);
+
+                //Delete the subdirectory
+                Directory.Delete(SubDirectory);
+
+                //Verify that the subdirectory was deleted
+                Assert.That(Directory.Exists(SubDirectory), Is.False);
+            }
+
+            /// <summary>
+            /// Tests deleting a file that doesn't exist
+            /// </summary>
+            [Test]
+            public void TestDeleteNonExistentFile()
+            {
+                const string SubDirectory = "sub";
+                const string TestFile = "sub/testFile.txt";
+
+                //Create the subdirectory
+                Directory.CreateDirectory(SubDirectory);
+
+                IFileIO fileIO = new FileIO();
+
+                //Verify that the file does not exist
+                File.Delete(TestFile);
+                Assert.That(File.Exists(TestFile), Is.False);
+
+                //Delete the test file
+                fileIO.DeleteFile(TestFile);
+
+                //Verify that the file still doesn't exists
+                Assert.That(File.Exists(TestFile), Is.False);
+
+                //Delete the subdirectory
+                Directory.Delete(SubDirectory);
+
+                //Verify that the subdirectory was deleted
+                Assert.That(Directory.Exists(SubDirectory), Is.False);
+            }
+
+            /// <summary>
+            /// Tests the DeleteFile method
+            /// </summary>
+            /// <param name="testFile">The file to be created and then deleted</param>
+            private void TestWithFile(string testFile)
+            {
+                try
+                {
+                    IFileIO fileIO = new FileIO();
+
+                    //Create the test file
+                    Stream fileStream = File.Create(testFile);
+
+                    //Close the file stream
+                    fileStream.Close();
+
+                    //Verify that the file exists
+                    Assert.That(File.Exists(testFile), Is.True);
+
+                    //Delete the test file
+                    fileIO.DeleteFile(testFile);
+
+                    //Verify that the file no longer exists
+                    Assert.That(File.Exists(testFile), Is.False);
+                }
+                catch(Exception)
+                {
+                    //Delete the test file
+                    File.Delete(testFile);
+
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
         /// Contains tests for the FileExists method
         /// </summary>
         [TestFixture]

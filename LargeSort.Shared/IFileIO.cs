@@ -39,6 +39,15 @@ namespace LargeSort.Shared
         StreamReader CreateFileStreamReader(string filePath);
 
         /// <summary>
+        /// Deletes a file
+        /// </summary>
+        /// <remarks>
+        /// If the file does not exist, nothing happens
+        /// </remarks>
+        /// <param name="filePath">The path to the file to be deleted</param>
+        void DeleteFile(string filePath);
+
+        /// <summary>
         /// Indicates if a file exists
         /// </summary>
         /// <param name="filePath">The path to a file</param>

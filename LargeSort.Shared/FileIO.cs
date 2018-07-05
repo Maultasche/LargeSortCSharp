@@ -28,6 +28,12 @@ namespace LargeSort.Shared
             return fileStreamReader;
         }
 
+        /// <see cref="IFileIO.DeleteFile(string)"/>
+        public void DeleteFile(string filePath)
+        {
+            File.Delete(filePath);
+        }
+
         /// <see cref="IFileIO.FileExists(string)"/>
         public bool FileExists(string filePath)
         {
