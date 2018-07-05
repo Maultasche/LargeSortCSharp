@@ -511,6 +511,126 @@ namespace LargeSort.Shared.Test
         }
 
         /// <summary>
+        /// Contains tests for the RenameFile method
+        /// </summary>
+        [TestFixture]
+        public class RenameFileTests : FileIOTestBase
+        {
+            /// <summary>
+            /// Tests creating renaming a file in the same directory
+            /// </summary>
+            [Test]
+            public void TestRenameFileInSameDirectory()
+            {
+                const string TestFile = "testFile.txt";
+                const string NewFileName = "renamedFile.txt";
+
+                //Run the tests
+                TestWithFile(TestFile, NewFileName);
+            }
+
+            /// <summary>
+            /// Tests renaming a file in a subdirectory
+            /// </summary>
+            [Test]
+            public void TestRenameFileInSubDirectory()
+            {
+                const string SubDirectory = "sub";
+                const string TestFile = "sub/testFile.txt";
+                const string NewFileName = "renamedFile.txt";
+
+                //Create the subdirectory
+                Directory.CreateDirectory(SubDirectory);
+
+                //Run the tests
+                TestWithFile(TestFile, NewFileName);
+
+                //Delete the subdirectory
+                Directory.Delete(SubDirectory);
+
+                //Verify that the subdirectory was deleted
+                Assert.That(Directory.Exists(SubDirectory), Is.False);
+            }
+
+            /// <summary>
+            /// Tests renaming a file when another file that has the new name already exists
+            /// </summary>
+            [Test]
+            public void TestCreateFileAlreadyExists()
+            {
+                const string SubDirectory = "sub";
+                const string TestFile = "sub/testFile.txt";
+                const string NewFileName = "renamedFile.txt";
+                const string NewFilePath = "sub/renamedFile.txt";
+
+                //Create the subdirectory
+                Directory.CreateDirectory(SubDirectory);
+
+                //Create a file with the new file name in the subdirectory
+                Stream fileStream = File.Create(NewFilePath);
+                fileStream.Close();
+
+                //Verify that the file was created
+                Assert.That(File.Exists(NewFilePath), Is.True);
+
+                //Run the tests, and assert that it throws an I/O exception
+                Assert.That(() => TestWithFile(TestFile, NewFileName), Throws.Exception.TypeOf<IOException>());
+
+                //Delete the existing file
+                File.Delete(TestFile);
+
+                //Delete the subdirectory
+                Directory.Delete(SubDirectory);
+
+                //Verify that the subdirectory was deleted
+                Assert.That(Directory.Exists(SubDirectory), Is.False);
+            }
+
+            /// <summary>
+            /// Tests the RenameFile method
+            /// </summary>
+            /// <param name="testFile">The file to be created and then renamed</param>
+            /// <param name="newFileName">The new name to be given to the file</param>
+            private void TestWithFile(string testFile, string newFileName)
+            {
+                //Calculate the renamed file path
+                string testFileDirectory = Path.GetDirectoryName(testFile);
+                string renamedFilePath = Path.Combine(testFileDirectory, newFileName);
+
+                try
+                {
+                    IFileIO fileIO = new FileIO();
+
+                    //Create the test file
+                    Stream fileStream = File.Create(testFile);
+
+                    //Close the file stream
+                    fileStream.Close();
+
+                    //Verify that the file exists
+                    Assert.That(File.Exists(testFile), Is.True);
+
+                    //Rename the test file
+                    fileIO.RenameFile(testFile, newFileName);
+
+                    //Verify that the file with the new file name exists and that the old file does not
+                    Assert.That(File.Exists(testFile), Is.False);
+                    Assert.That(File.Exists(renamedFilePath), Is.True);
+                }
+                finally
+                {
+                    //Delete the files
+                    File.Delete(testFile);
+                    File.Delete(renamedFilePath);
+                }
+
+                //Verify that the files have been deleted
+                Assert.That(File.Exists(testFile), Is.False);
+                Assert.That(File.Exists(renamedFilePath), Is.False);
+            }
+        }
+
+        /// <summary>
         /// Contains tests for the WriteIntegerToStream method
         /// </summary>
         [TestFixture]

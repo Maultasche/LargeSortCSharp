@@ -56,6 +56,16 @@ namespace LargeSort.Shared
         string GetDirectoryFromFilePath(string filePath);
 
         /// <summary>
+        /// Renames a file
+        /// </summary>
+        /// <remarks>
+        /// A rename will fail if another file with that name already exists
+        /// </remarks>
+        /// <param name="filePath">The file to be renamed</param>
+        /// <param name="newFileName">The new name to be given to the file</param>
+        void RenameFile(string filePath, string newFileName);
+
+        /// <summary>
         /// Writes an integer to a stream using a specific StreamWriter
         /// </summary>
         /// <remarks>

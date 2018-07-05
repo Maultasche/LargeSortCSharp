@@ -40,6 +40,17 @@ namespace LargeSort.Shared
             return Path.GetDirectoryName(filePath);
         }
 
+        /// <see cref="IFileIO.RenameFile(string, string)"/>
+        public void RenameFile(string filePath, string newFileName)
+        {
+            //Calculate the renamed file path
+            string fileDirectory = Path.GetDirectoryName(filePath);
+            string renamedFilePath = Path.Combine(fileDirectory, newFileName);
+
+            //Rename it using a move operations
+            File.Move(filePath, renamedFilePath);
+        }
+
         public void WriteIntegerToStream(StreamWriter integerStreamWriter, int integer)
         {
             integerStreamWriter.WriteLine(integer);
