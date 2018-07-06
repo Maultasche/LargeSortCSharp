@@ -86,7 +86,7 @@ namespace IntSort
         /// <param name="updateProgress">A method that will be called to update chunk file creation progress. The 
         /// number of integers that have been merged so far in the file group will be passed to this method 
         /// whenever an integer is merged.</param>
-        /// <returns>The name of the output file that was written</returns>
+        /// <returns>The path of the output file that was written</returns>
         private string MergeInputFileGroup(List<string> fileGroup, string outputDirectory, string fileTemplate, 
             int fileGroupNumber, Action<int> updateProgress = null)
         {

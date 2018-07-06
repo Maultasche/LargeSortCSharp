@@ -21,7 +21,7 @@ namespace IntSort.Test
         /// Defines tests for the MergeIntegerFiles method
         /// </summary>
         [TestFixture]
-        public class MergeIntegerFiles
+        public class MergeIntegerFilesTests
         {
             /// <summary>
             /// Tests with input files that exactly match the merge count
@@ -256,7 +256,7 @@ namespace IntSort.Test
             /// Creates and returns a mock integer stream merger
             /// </summary>
             /// <param name="fileMerges">The data indicating how the files were merged</param>
-            /// <returns>The mock file I/O</returns>
+            /// <returns>The mock integer stream merger</returns>
             private Mock<IIntegerStreamMerger> CreateMockIntegerStreamMerger(List<Tuple<List<string>, string>> fileMerges)
             {
                 Mock<IIntegerStreamMerger> mockIntegerStreamMerger = new Mock<IIntegerStreamMerger>();
