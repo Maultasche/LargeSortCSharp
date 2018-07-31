@@ -14,6 +14,10 @@ namespace IntGen
     {
         private static IServiceProvider serviceProvider = null;
 
+        /// <summary>
+        /// The main entry point for this program
+        /// </summary>
+        /// <param name="args">The raw command line arguments</param>
         static void Main(string[] args)
         {
             try
@@ -32,8 +36,6 @@ namespace IntGen
                         //Generate the integers and pass a method that will update the progress bar
                         GenerateIntegers(options, generatedIntegers => UpdateProgressBar(progressBar, generatedIntegers));
 
-                        GenerateIntegers(options, generatedIntegers => { });
-
                         Console.WriteLine();
                     })
                     .WithNotParsed(errors => Environment.ExitCode = -1);
@@ -44,6 +46,11 @@ namespace IntGen
             }
         }
 
+        /// <summary>
+        /// Creates a progress bar
+        /// </summary>
+        /// <param name="totalIntegers">The total number of integers that the progress bar will represent</param>
+        /// <returns></returns>
         static ProgressBar CreateProgressBar(uint totalIntegers)
         {
             var options = new ProgressBarOptions()
@@ -61,6 +68,11 @@ namespace IntGen
             return progressBar;
         }
 
+        /// <summary>
+        /// Updates a progress bar
+        /// </summary>
+        /// <param name="progressBar">The progress bar to be updated</param>
+        /// <param name="generatedIntegers">The total number of integers that have been generated so far</param>
         static void UpdateProgressBar(ProgressBar progressBar, int generatedIntegers)
         {
             //If we update for every integer, and large numbers of integers are being generated, 
@@ -97,7 +109,12 @@ namespace IntGen
             return serviceCollection.BuildServiceProvider();
         }
 
-
+        /// <summary>
+        /// Generates the integers and stores them in a text file
+        /// </summary>
+        /// <param name="options">The parsed command line options</param>
+        /// <param name="updateIntegerGenerationStatus">A callback method that will be called to update
+        /// the status of integer generation</param>
         static void GenerateIntegers(CommandLineOptions options, Action<int> updateIntegerGenerationStatus)
         {
             //Get an instance of the integer file creator
@@ -128,6 +145,10 @@ namespace IntGen
             integerFileCreator.CreateIntegerTextFile(randomIntegers, options.FilePath);
         }
 
+        /// <summary>
+        /// Outputs the parsed command line options
+        /// </summary>
+        /// <param name="options">The parsed command line options</param>
         static void OutputParsedOptions(CommandLineOptions options)
         {
             Console.WriteLine("Count: " + options.Count);
