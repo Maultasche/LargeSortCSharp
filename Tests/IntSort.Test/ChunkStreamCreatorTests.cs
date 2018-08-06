@@ -12,7 +12,7 @@ namespace IntSort.Test
     /// <summary>
     /// Contains the tests for the ChunkStreamCreator class
     /// </summary>
-    public class IntegerFileCreatorTests
+    public class ChunkStreamCreatorTests
     {
         /// <summary>
         /// Defines tests for the CreateIntegerChunkGenerator method
@@ -340,7 +340,7 @@ namespace IntSort.Test
                 Assert.That(testIntegers, Is.Not.Null);
 
                 //Create memory stream and stream reader from the test integers
-                using (Stream integerStream = CreateIntegerStream(testIntegers))
+                using (Stream integerStream = TestStream.CreateIntegerStream(testIntegers))
                 using (StreamReader integerStreamReader = new StreamReader(integerStream))
                 {
                     //Create the chunk generator
@@ -414,28 +414,6 @@ namespace IntSort.Test
                 }
 
                 return chunkedIntegers;
-            }
-
-            /// <summary>
-            /// Creates a stream of text that contains a set of integers, with each
-            /// integer on its own line
-            /// </summary>
-            /// <param name="testIntegers">The set of integers to be put into the stream</param>
-            /// <returns>The stream containing the integers</returns>
-            private Stream CreateIntegerStream(List<int> testIntegers)
-            {
-                MemoryStream integerStream = new MemoryStream();
-                StreamWriter integerStreamWriter = new StreamWriter(integerStream);
-
-                testIntegers.ForEach(integer => integerStreamWriter.WriteLine(integer));
-
-                integerStreamWriter.Flush();
-
-                //Make sure that the stream position is reset to the beginning of the stream
-                //so that any reads will happen from the beginning
-                integerStream.Position = 0;
-
-                return integerStream;
             }
         }
     }
