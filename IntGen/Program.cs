@@ -50,7 +50,7 @@ namespace IntGen
         /// Creates a progress bar
         /// </summary>
         /// <param name="totalIntegers">The total number of integers that the progress bar will represent</param>
-        /// <returns></returns>
+        /// <returns>The constructed progress bar</returns>
         static ProgressBar CreateProgressBar(uint totalIntegers)
         {
             var options = new ProgressBarOptions()
@@ -81,7 +81,7 @@ namespace IntGen
             //For a million integers, this change reduced the runtime from over 9 minutes 
             //to under a second
 
-            int tickSize = progressBar.MaxTicks / 100;
+            int tickSize = Math.Max(progressBar.MaxTicks / 100, 1);
 
             if(generatedIntegers % tickSize == 0)
             {
