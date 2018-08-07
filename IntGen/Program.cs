@@ -20,6 +20,8 @@ namespace IntGen
         /// <param name="args">The raw command line arguments</param>
         static void Main(string[] args)
         {
+            ConsoleInfo consoleSettings = ConsoleInfo.CurrentInfo();
+
             try
             {
                 //Create the dependency injection service provider
@@ -43,6 +45,10 @@ namespace IntGen
             catch(Exception exception)
             {
                 Console.WriteLine(exception.Message);
+            }
+            finally
+            {
+                ConsoleInfo.RestoreSettings(consoleSettings);
             }
         }
 
