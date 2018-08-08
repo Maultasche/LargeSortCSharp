@@ -25,11 +25,11 @@ namespace IntSort
             this.integerFileMerger = integerFileMerger;
         }
 
-        /// <see cref="IChunkFileMerger.MergeChunkFilesIntoSingleFile(List{string}, int, string, string, string, Action{int, int})"
+        /// <see cref="IChunkFileMerger.MergeChunkFilesIntoSingleFile(List{string}, int, string, string, string, int, Action{int, int})"
         public List<string> MergeChunkFilesIntoSingleFile(List<string> chunkFiles, int mergeCount, string intermediateFileTemplate,
-            string outputFile, string outputDirectory, Action<int, int> updateProgress)
+            string outputFile, string outputDirectory, int startingGeneration, Action<int, int> updateProgress)
         {
-            int currentGeneration = 1;
+            int currentGeneration = startingGeneration;
 
             //Call the updateProgress callback every time an integer is merged
             Action<int> updateMergeProgress = (integerCount =>

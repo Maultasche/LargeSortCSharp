@@ -24,11 +24,12 @@ namespace IntSort
         /// <param name="outputFile">The output file that the final merged results are to be written</param>
         /// <param name="outputDirectory">The output directory where the intermediate files and final output
         /// file are to be written</param>
+        /// <param name="startingGeneration">The generation number to start with when merging</param>
         /// <param name="updateProgress">A method that will be called to update file merge progress. The 
         /// first parameter is the merge generation number and the second number is the number of integers that 
         /// have been merged as part of that generation.</param>
         /// <returns>The intermediate files that were written</returns>
         List<string> MergeChunkFilesIntoSingleFile(List<string> chunkFiles, int mergeCount, string intermediateFileTemplate,
-            string outputFile, string outputDirectory, Action<int, int> updateProgress);
+            string outputFile, string outputDirectory, int startingGeneration, Action<int, int> updateProgress);
     }
 }

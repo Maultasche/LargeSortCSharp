@@ -94,6 +94,26 @@ namespace IntSort.Test
             }
 
             /// <summary>
+            /// Tests with a variety of different starting generation numbers
+            /// </summary>
+            [Test]
+            public void TestMergeChunkFilesStartingGenerations()
+            {
+                const int MergeCount = 10;
+                const int NumOfFiles = 1023;
+                const int MinStartingGeneration = 1;
+                const int MaxStartingGeneration = 12;
+
+                for(int startingGeneration = MinStartingGeneration; startingGeneration <= MaxStartingGeneration; startingGeneration++)
+                {
+                    List<string> inputFiles = CreateChunkFileNames(NumOfFiles);
+
+                    //Run the test
+                    RunMergeChunkFilesIntoSingleFileTest(inputFiles, MergeCount, startingGeneration);
+                }
+            }
+
+            /// <summary>
             /// Tests the merging of chunk files with the update progress method callback
             /// </summary>
             [Test]
@@ -109,6 +129,7 @@ namespace IntSort.Test
                 const int IntegersPerFile = 10;
                 const int ExpectedMerges = NumOfFiles * IntegersPerFile;
                 const int ExpectedGenerations = 4;
+                const int StartingGeneration = 2;
 
                 //We need to track how many times updateProgress is called and what is passed in when it
                 //is called.
@@ -133,14 +154,14 @@ namespace IntSort.Test
                 List<string> inputFiles = CreateChunkFileNames(NumOfFiles);
 
                 //Run the test
-                RunMergeChunkFilesIntoSingleFileTest(inputFiles, MergeCount, updateProgress);
+                RunMergeChunkFilesIntoSingleFileTest(inputFiles, MergeCount, StartingGeneration, updateProgress);
 
                 //Verify that updateProgressCalls has entries for each generation
                 Assert.That(updateProgressCalls.Count, Is.EqualTo(ExpectedGenerations));
 
                 //Verify that updateProgress was called the expected number of times for each generation
                 //and that the values passed ranged from 1 to ExpectedMerges with no repeats
-                for (int generation = 1; generation <= ExpectedGenerations; generation++)
+                for (int generation = StartingGeneration; generation < StartingGeneration + ExpectedGenerations; generation++)
                 {
                     List<int> generationCalls = updateProgressCalls[generation];
 
@@ -163,8 +184,8 @@ namespace IntSort.Test
             /// <param name="updateProgress">A method that will be called to update integer merging progress. The 
             /// generation number and number of integers that have been merged so far will be passed to this 
             /// method whenever an integer is written an output file.</param>
-            private void RunMergeChunkFilesIntoSingleFileTest(List<string> chunkFiles, int mergeCount,
-                Action<int, int> updateProgress = null)
+            private void RunMergeChunkFilesIntoSingleFileTest(List<string> chunkFiles, int mergeCount, 
+                int startingGeneration = 1, Action<int, int> updateProgress = null)
             {
                 const string IntermediateFileTemplate = "gen{0}-{1}.txt";
                 const string OutputDirectory = "output/";
@@ -175,7 +196,7 @@ namespace IntSort.Test
 
                 //Calculate the expected intermediate files for each merge generation. 
                 List<List<string>> expectedIntermediateFiles = CalculateExpectedIntermediateFiles(chunkFiles.Count,
-                    mergeCount, mergeGenerations, IntermediateFileTemplate, OutputDirectory);
+                    mergeCount, mergeGenerations, IntermediateFileTemplate, OutputDirectory, startingGeneration);
 
                 //Mock the file I/O functionality
                 Mock<IFileIO> mockFileIO = CreateMockFileIO();
@@ -188,14 +209,15 @@ namespace IntSort.Test
 
                 //Merge the chunk files
                 List<string> intermediateFiles = chunkFileMerger.MergeChunkFilesIntoSingleFile(chunkFiles,
-                    mergeCount, IntermediateFileTemplate, OutputFile, OutputDirectory, updateProgress);
+                    mergeCount, IntermediateFileTemplate, OutputFile, OutputDirectory, startingGeneration,
+                    updateProgress);
 
                 //Verify that the expected intermediate files were created
                 Assert.That(intermediateFiles, Is.EquivalentTo(expectedIntermediateFiles.SelectMany(fileGroup => fileGroup)));
 
                 //Verify that the integer file merger was called correctly for each merge generation
                 VerifyIntegerFileMerges(mockIntegerFileMerger, chunkFiles, expectedIntermediateFiles, mergeCount, 
-                    IntermediateFileTemplate, OutputDirectory);
+                    IntermediateFileTemplate, OutputDirectory, startingGeneration);
 
                 //Verify that the output directory was created correctly
                 mockFileIO.Verify(mock => mock.CreateDirectory(
@@ -208,7 +230,7 @@ namespace IntSort.Test
 
                 //Verify that the final merge file was renamed to the output file
                 string finalMergeFile = Path.Combine(OutputDirectory, 
-                    string.Format(IntermediateFileTemplate, mergeGenerations, "1"));
+                    string.Format(IntermediateFileTemplate, startingGeneration + mergeGenerations - 1, "1"));
 
                 mockFileIO.Verify(mock => mock.RenameFile(
                     It.Is<string>(originalFile => originalFile == finalMergeFile),
@@ -226,15 +248,16 @@ namespace IntSort.Test
             /// <param name="mergeGenerations">The number of expected merge generations</param>
             /// <param name="intermediateFileTemplate">The intermediate file tempalte</param>
             /// <param name="outputDirectory">The output directory</param>
+            /// <param name="startingGeneration">The number of the first merge generation</param>
             /// <returns></returns>
             private List<List<string>> CalculateExpectedIntermediateFiles(int chunkFilesCount, int mergeCount, 
-                int mergeGenerations, string intermediateFileTemplate, string outputDirectory)
+                int mergeGenerations, string intermediateFileTemplate, string outputDirectory, int startingGeneration)
             {
-                List<List<string>> expectedIntermediateFiles = Enumerable.Range(1, mergeGenerations)
+                List<List<string>> expectedIntermediateFiles = Enumerable.Range(startingGeneration, mergeGenerations)
                     .Select(generation =>
                     {
                         int generationOutputFiles = CalculateNumberOfGenerationOutputFiles(chunkFilesCount,
-                            mergeCount, generation);
+                            mergeCount, generation - startingGeneration + 1);
 
                         return Enumerable.Range(1, generationOutputFiles)
                             .Select(fileNumber => Path.Combine(outputDirectory, 
@@ -371,14 +394,15 @@ namespace IntSort.Test
             /// <param name="mergeCount">The merge count</param>
             /// <param name="intermediateFileTemplate">The template for the intermediate files</param>
             /// <param name="outputDirectory">The output directory</param>
+            /// <param name="startingGeneration">The number to use as the starting generation</param>
             private void VerifyIntegerFileMerges(Mock<IIntegerFileMerger> mockIntegerFileMerger, List<string> chunkFiles, 
                 List<List<string>> expectedIntermediateFiles, int mergeCount, string intermediateFileTemplate, 
-                string outputDirectory)
+                string outputDirectory, int startingGeneration)
             {
                 //Verify that the integer files were merged correctly for each merge generation
                 //The first generation merge will involve the chunk files and each subsequent generation
                 //merge will involve the output files from the previous generation
-                string expectedFileTemplate = string.Format(intermediateFileTemplate, 1, "{0}");
+                string expectedFileTemplate = string.Format(intermediateFileTemplate, startingGeneration, "{0}");
 
                 mockIntegerFileMerger.Verify(mock => mock.MergeIntegerFiles(
                     It.Is<List<string>>(integerFiles => integerFiles.OrderBy(file => file).SequenceEqual(chunkFiles.OrderBy(file => file))),
@@ -388,9 +412,9 @@ namespace IntSort.Test
                     It.IsAny<Action<int>>()), Times.Once);
 
                 //Verify for the subsequent generations (output from gen 1 to output of gen N - 1)
-                for (int generation = 1; generation < expectedIntermediateFiles.Count; generation++)
+                for (int generation = startingGeneration; generation < startingGeneration + expectedIntermediateFiles.Count - 1; generation++)
                 {
-                    List<string> expectedFiles = expectedIntermediateFiles[generation - 1]
+                    List<string> expectedFiles = expectedIntermediateFiles[generation - startingGeneration]
                         .OrderBy(file => file)
                         .ToList();
 
