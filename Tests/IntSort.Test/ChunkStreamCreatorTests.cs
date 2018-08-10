@@ -384,6 +384,9 @@ namespace IntSort.Test
                         expectedChunksAvailable = expectedChunkEnumerator.MoveNext();
                     }
 
+                    //Verify that the expected number of chunks were generated
+                    Assert.That(chunksGenerated, Is.EqualTo(expectedChunks.Count));
+
                     integerStreamReader.Close();
                 }
             }
