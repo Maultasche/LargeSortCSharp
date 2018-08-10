@@ -65,7 +65,7 @@ namespace IntSort
             fileIO.DeleteFile(outputFilePath);
 
             //Rename the remaining file to the output file
-            fileIO.RenameFile(remainingFiles[0], outputFilePath);
+            fileIO.RenameFile(remainingFiles[0], outputFile);
 
             return intermediateFiles;
         }

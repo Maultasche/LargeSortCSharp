@@ -30,8 +30,9 @@ namespace IntSort
                 //Add the integer to the current chunk
                 currentChunk.Add(integer);
 
-                //If the current chunk has reached the chunk size, yield it and start a new chunk
-                if(currentChunk.Count == chunkSize)
+                //If the current chunk has reached the chunk size or if there are no more integers left, 
+                //yield the current chunk and start a new chunk
+                if(currentChunk.Count == chunkSize || textStreamReader.EndOfStream)
                 {
                     yield return currentChunk;
 
