@@ -32,7 +32,7 @@ namespace IntSort
 
             int chunkNum = 1;
 
-            sortedIntegerChunks.ToList().ForEach(chunk =>
+            foreach(var chunk in sortedIntegerChunks)
             {
                 //Create the file name for this chunk
                 string chunkFileName = string.Format(chunkFileTemplate, chunkNum);
@@ -47,7 +47,7 @@ namespace IntSort
                 updateProgress?.Invoke(chunkNum);
 
                 chunkNum++;
-            });
+            }
 
             return chunkFiles;
         }
