@@ -31,7 +31,7 @@ namespace IntSort.Test
             /// 10 integers with a chunk size of 2
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorTwoIntegerChunks()
+            public void TestIntegerFileInfoCollectionTwoIntegerChunks()
             {
                 const int chunkSize = 2;
 
@@ -56,7 +56,7 @@ namespace IntSort.Test
             /// 10 integers with a chunk size of 1
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorOneIntegerChunks()
+            public void TestIntegerFileInfoCollectionOneIntegerChunks()
             {
                 const int chunkSize = 1;
 
@@ -82,7 +82,7 @@ namespace IntSort.Test
             /// 10 integers with a chunk size of 3
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorNonAlignedChunkSize()
+            public void TestIntegerFileInfoCollectionNonAlignedChunkSize()
             {
                 const int chunkSize = 3;
 
@@ -108,7 +108,7 @@ namespace IntSort.Test
             /// 10 integers with a chunk size of 10
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorEqualChunkAndIntegerSize()
+            public void TestIntegerFileInfoCollectionEqualChunkAndIntegerSize()
             {
                 const int chunkSize = 10;
 
@@ -134,7 +134,7 @@ namespace IntSort.Test
             /// 10 integers with a chunk size of 12
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorChunkSizeLargerThanIntegers()
+            public void TestIntegerFileInfoCollectionChunkSizeLargerThanIntegers()
             {
                 const int chunkSize = 12;
 
@@ -160,7 +160,7 @@ namespace IntSort.Test
             /// 1 integer with a chunk size of 10
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorOneIntegerLargerChunkSize()
+            public void TestIntegerFileInfoCollectionOneIntegerLargerChunkSize()
             {
                 const int chunkSize = 10;
 
@@ -186,7 +186,7 @@ namespace IntSort.Test
             /// 1 integer with a chunk size of 1
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorOneIntegerOneChunkSize()
+            public void TestIntegerFileInfoCollectionOneIntegerOneChunkSize()
             {
                 const int chunkSize = 1;
 
@@ -212,7 +212,7 @@ namespace IntSort.Test
             /// 0 integers with a chunk size of 10
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorNoIntegers()
+            public void TestIntegerFileInfoCollectionNoIntegers()
             {
                 const int chunkSize = 10;
 
@@ -238,7 +238,7 @@ namespace IntSort.Test
             /// 100 integers with a chunk size of 10
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorSmallIntegersSmallChunk()
+            public void TestIntegerFileInfoCollectionSmallIntegersSmallChunk()
             {
                 const int chunkSize = 10;
                 const int numOfIntegers = 100;
@@ -265,7 +265,7 @@ namespace IntSort.Test
             /// 1000000 integers with a chunk size of 10
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorLargeIntegersSmallChunk()
+            public void TestIntegerFileInfoCollectionLargeIntegersSmallChunk()
             {
                 const int chunkSize = 10;
                 const int numOfIntegers = 580;
@@ -292,7 +292,7 @@ namespace IntSort.Test
             /// 10 integers with a chunk size of 1000000
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorSmallIntegersLargeChunk()
+            public void TestIntegerFileInfoCollectionSmallIntegersLargeChunk()
             {
                 const int chunkSize = 1000000;
                 const int numOfIntegers = 10;
@@ -319,7 +319,7 @@ namespace IntSort.Test
             /// 1000000 integers with a chunk size of 10000
             /// </remarks>
             [Test]
-            public void TestIntegerChunkGeneratorLargeIntegersLargeChunk()
+            public void TestIntegerFileInfoCollectionLargeIntegersLargeChunk()
             {
                 const int chunkSize = 10000;
                 const int numOfIntegers = 1000000;
