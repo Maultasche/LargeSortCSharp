@@ -43,7 +43,8 @@ namespace IntSort
                     .WithParsed(options =>
                     {
                         //Keep track of when the sort operation begins
-                        //TODO
+                        Stopwatch stopwatch = new Stopwatch();
+                        stopwatch.Start();
 
                         //Sort the integers
                         List<string> intermediateFiles = SortIntegers(options);
@@ -55,7 +56,9 @@ namespace IntSort
                         }
 
                         //Display the amount of time it took to perform the entire sort operation
-                        //TODO
+                        stopwatch.Stop();
+
+                        DisplayElapsedTime(stopwatch.Elapsed);
                     })
                     .WithNotParsed(errors => Environment.ExitCode = -1);
             }
@@ -262,7 +265,7 @@ namespace IntSort
         /// <param name="totalSteps">The total number of steps the progress bar will represent</param>
         /// <param name="message">The message to display next to the progress bar</param>
         /// <returns>The constructed progress bar</returns>
-        static ProgressBar CreateProgressBar(int totalSteps, string message)
+        private static ProgressBar CreateProgressBar(int totalSteps, string message)
         {
             var options = new ProgressBarOptions()
             {
@@ -277,6 +280,36 @@ namespace IntSort
             var progressBar = new ProgressBar(totalSteps, message, options);
 
             return progressBar;
+        }
+
+        /// <summary>
+        /// Displays the amount of time that elapsed from the start of the entire sorting operation
+        /// to the end
+        /// </summary>
+        /// <param name="elapsedTime">The amount of time that elapsed</param>
+        private static void DisplayElapsedTime(TimeSpan elapsedTime)
+        {
+            string timeSpanString = string.Empty;
+
+            if(elapsedTime.TotalSeconds < 1.0)
+            {
+                timeSpanString = String.Format("{0}ms", elapsedTime.Milliseconds);
+            }
+            else if (elapsedTime.TotalMinutes < 1.0)
+            {
+                timeSpanString = String.Format("{0}s", elapsedTime.Seconds);
+            }
+            else if (elapsedTime.TotalHours < 1.0)
+            {
+                timeSpanString = String.Format("{0}m:{1:D2}s", elapsedTime.Minutes, elapsedTime.Seconds);
+            }
+            else
+            {
+                timeSpanString = String.Format("{0}h:{1:D2}m:{2:D2}s", (int)elapsedTime.TotalHours, elapsedTime.Minutes,
+                    elapsedTime.Seconds);
+            }
+
+            Console.WriteLine(string.Format("Done in {0}", timeSpanString));
         }
 
         /// <summary>
