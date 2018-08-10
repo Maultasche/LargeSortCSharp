@@ -234,7 +234,7 @@ namespace IntSort.Test
 
                 mockFileIO.Verify(mock => mock.RenameFile(
                     It.Is<string>(originalFile => originalFile == finalMergeFile),
-                    It.Is<string>(renamedFile => renamedFile == outputFilePath)), Times.Once);
+                    It.Is<string>(renamedFile => renamedFile == OutputFile)), Times.Once);
 
                 mockFileIO.VerifyNoOtherCalls();
                 mockIntegerFileMerger.VerifyNoOtherCalls();
