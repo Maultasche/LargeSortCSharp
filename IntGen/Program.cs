@@ -89,7 +89,7 @@ namespace IntGen
 
             int tickSize = Math.Max(progressBar.MaxTicks / 100, 1);
 
-            if(generatedIntegers % tickSize == 0)
+            if(generatedIntegers % tickSize == 0 || generatedIntegers == progressBar.MaxTicks)
             {
                 progressBar.Tick(generatedIntegers);
 
