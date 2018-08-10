@@ -49,7 +49,10 @@ namespace IntSort
                         List<string> intermediateFiles = SortIntegers(options);
 
                         //If the option to keep the intermediate files was not specified, delete them
-                        //TODO
+                        if(!options.KeepIntermediate)
+                        {
+                            DeleteIntermediateFiles(intermediateFiles);
+                        }
 
                         //Display the amount of time it took to perform the entire sort operation
                         //TODO
@@ -72,23 +75,30 @@ namespace IntSort
         /// <param name="options">The command line options</param>
         private static List<string> SortIntegers(CommandLineOptions options)
         {
+            IFileIO fileIO = serviceProvider.GetService<IFileIO>();
             IIntegerFileInfoCollector integerFileInfoCollector = serviceProvider.GetService<IIntegerFileInfoCollector>();
+
+            //Find the output directory where the output file will be written
+            string outputDirectory = fileIO.GetDirectoryFromFilePath(options.OutputFilePath);
 
             //Collect information on the input file
             IntegerFileInfo inputFileInfo = integerFileInfoCollector.GetIntegerFileInfo(options.InputFile, (int)options.ChunkSize);
 
             //Store the intermediate files so that they can be deleted later on
-            List<string> intermediateFiles = new List<string>();
+            List<string> intermediateFilePaths = new List<string>();
 
-            List<string> chunkFiles = CreateChunkFiles(options, inputFileInfo);
+            List<string> chunkFiles = CreateChunkFiles(options, inputFileInfo, outputDirectory);
 
-            intermediateFiles.AddRange(chunkFiles);
+            //Translate the file names to file paths
+            var chunkFilePaths = chunkFiles.Select(file => Path.Combine(outputDirectory, file)).ToList();
 
-            List<string> mergeIntermediateFiles = MergeChunkFiles(chunkFiles, options, inputFileInfo);
+            intermediateFilePaths.AddRange(chunkFilePaths);
 
-            intermediateFiles.AddRange(mergeIntermediateFiles);
+            List<string> mergeIntermediateFilePaths = MergeChunkFiles(chunkFiles, options, inputFileInfo);
 
-            return intermediateFiles;
+            intermediateFilePaths.AddRange(mergeIntermediateFilePaths);
+
+            return intermediateFilePaths;
         }
 
         /// <summary>
@@ -96,15 +106,12 @@ namespace IntSort
         /// </summary>
         /// <param name="options">The command line options</param>
         /// <param name="inputFileInfo">Information regarding the input file</param>
+        /// <param name="outputDirectory">The directory where the chunk files will be written</param>
         /// <returns>The chunk files that were created</returns>
-        private static List<string> CreateChunkFiles(CommandLineOptions options, IntegerFileInfo inputFileInfo)
+        private static List<string> CreateChunkFiles(CommandLineOptions options, IntegerFileInfo inputFileInfo,
+            string outputDirectory)
         {
-            IFileIO fileIO = serviceProvider.GetService<IFileIO>();
-
             DisplayInputFileInfo(inputFileInfo);
-
-            //Find the output directory where the output file will be written
-            string outputDirectory = fileIO.GetDirectoryFromFilePath(options.OutputFilePath);
 
             //Create the progress bar for the chunk file creation
             var chunkProgressBar = CreateProgressBar(inputFileInfo.NumOfChunks, ChunkProgressMessage);
@@ -167,7 +174,7 @@ namespace IntSort
         private static List<string> MergeChunkFiles(List<string> chunkFiles, CommandLineOptions options,
             IntegerFileInfo inputFileInfo)
         {
-            List<string> intermediateFiles = new List<string>();
+            List<string> intermediateFilePaths = new List<string>();
            
             IFileIO fileIO = serviceProvider.GetService<IFileIO>();
             IChunkFileMerger chunkFileMerger = serviceProvider.GetService<IChunkFileMerger>();
@@ -211,10 +218,12 @@ namespace IntSort
             };
 
             
-            chunkFileMerger.MergeChunkFilesIntoSingleFile(chunkFilePaths, MergeCount, GenFileTemplate, 
+            List<string> mergeFiles = chunkFileMerger.MergeChunkFilesIntoSingleFile(chunkFilePaths, MergeCount, GenFileTemplate, 
                 Path.GetFileName(options.OutputFilePath), outputDirectory, FirstMergeGeneration, updateMergeProgress);
 
-            return intermediateFiles;
+            intermediateFilePaths.AddRange(mergeFiles);
+
+            return intermediateFilePaths;
         }
 
         /// <summary>
@@ -231,6 +240,18 @@ namespace IntSort
             int numOfOutputFiles = (int)Math.Ceiling(chunkFilesCount / (Math.Pow(mergeCount, generation)));
 
             return numOfOutputFiles;
+        }
+
+        /// <summary>
+        /// Deletes the intermediate files that were generated while chunking, sorting, and merging
+        /// </summary>
+        /// <param name="intermediateFiles">The intermediate files to be deleted</param>
+        /// <param name="intermediateFileDirectory">The directory where the intermediate files are stored</param>
+        private static void DeleteIntermediateFiles(List<string> intermediateFiles)
+        {
+            IFileIO fileIO = serviceProvider.GetService<IFileIO>();
+
+            intermediateFiles.ForEach(file => fileIO.DeleteFile(file));
         }
 
         #region UI Methods
