@@ -63,7 +63,7 @@ namespace IntGen
             {
                 BackgroundCharacter = '\u2593',
                 ProgressBarOnBottom = true,
-                DisplayTimeInRealTime = false,
+                DisplayTimeInRealTime = false,                
                 ForegroundColor = ConsoleColor.Gray,
                 ForegroundColorDone = ConsoleColor.Gray,
                 BackgroundColor = ConsoleColor.DarkGray
@@ -87,7 +87,7 @@ namespace IntGen
             //For a million integers, this change reduced the runtime from over 9 minutes 
             //to under a second
 
-            int tickSize = Math.Max(progressBar.MaxTicks / 100, 1);
+            int tickSize = Math.Max(progressBar.MaxTicks / 1000, 1);
 
             if(generatedIntegers % tickSize == 0 || generatedIntegers == progressBar.MaxTicks)
             {

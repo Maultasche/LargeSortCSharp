@@ -410,7 +410,7 @@ namespace IntSort
             //the application will spend more time updating the progress bar than it will doing its real work
             //So the solution is to update the progress bar every 1% of Steps.
 
-            int tickSize = Math.Max(progressBar.MaxTicks / 100, 1);
+            int tickSize = Math.Max(progressBar.MaxTicks / 1000, 1);
 
             if (currentSteps % tickSize == 0 || currentSteps == progressBar.MaxTicks)
             {
