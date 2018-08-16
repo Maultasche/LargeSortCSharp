@@ -25,9 +25,10 @@ namespace IntSort
             this.integerFileMerger = integerFileMerger;
         }
 
-        /// <see cref="IChunkFileMerger.MergeChunkFilesIntoSingleFile(List{string}, int, string, string, string, int, Action{int, int})"
+        /// <see cref="IChunkFileMerger.MergeChunkFilesIntoSingleFile(List{string}, int, string, string, string, int, bool, Action{int, int})"
         public List<string> MergeChunkFilesIntoSingleFile(List<string> chunkFiles, int mergeCount, string intermediateFileTemplate,
-            string outputFile, string outputDirectory, int startingGeneration, Action<int, int> updateProgress)
+            string outputFile, string outputDirectory, int startingGeneration, bool deleteIntermediateFiles, 
+            Action<int, int> updateProgress)
         {
             int currentGeneration = startingGeneration;
 
@@ -49,11 +50,20 @@ namespace IntSort
                 //Create the file template for the current generation
                 string generationFileTemplate = string.Format(intermediateFileTemplate, currentGeneration, "{0}");
 
+                List<string> mergedFiles = remainingFiles;
+
                 //Merge the files for the current generation
                 remainingFiles = integerFileMerger.MergeIntegerFiles(remainingFiles, mergeCount, generationFileTemplate,
                     outputDirectory, updateMergeProgress);
 
                 intermediateFiles.AddRange(remainingFiles);
+
+                //If we are to delete the intermediate files, then delete the files that were merged as part of
+                //this merge generation
+                if(deleteIntermediateFiles)
+                {
+                    mergedFiles.ForEach(file => fileIO.DeleteFile(file));
+                }
 
                 currentGeneration++;
             }

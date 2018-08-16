@@ -114,6 +114,23 @@ namespace IntSort.Test
             }
 
             /// <summary>
+            /// Tests with deleting the intermediate files after every merge
+            /// </summary>
+            [Test]
+            public void TestMergeChunkFileDeleteIntermediate()
+            {
+                const int MergeCount = 3;
+                const int NumOfFiles = 23;
+                const int StartingGeneration = 1;
+                const bool DeleteIntermediate = true;
+
+                List<string> inputFiles = CreateChunkFileNames(NumOfFiles);
+
+                //Run the test
+                RunMergeChunkFilesIntoSingleFileTest(inputFiles, MergeCount, StartingGeneration, DeleteIntermediate);
+            }
+
+            /// <summary>
             /// Tests the merging of chunk files with the update progress method callback
             /// </summary>
             [Test]
@@ -130,6 +147,7 @@ namespace IntSort.Test
                 const int ExpectedMerges = NumOfFiles * IntegersPerFile;
                 const int ExpectedGenerations = 4;
                 const int StartingGeneration = 2;
+                const bool DeleteIntermediate = false;
 
                 //We need to track how many times updateProgress is called and what is passed in when it
                 //is called.
@@ -154,7 +172,7 @@ namespace IntSort.Test
                 List<string> inputFiles = CreateChunkFileNames(NumOfFiles);
 
                 //Run the test
-                RunMergeChunkFilesIntoSingleFileTest(inputFiles, MergeCount, StartingGeneration, updateProgress);
+                RunMergeChunkFilesIntoSingleFileTest(inputFiles, MergeCount, StartingGeneration, DeleteIntermediate, updateProgress);
 
                 //Verify that updateProgressCalls has entries for each generation
                 Assert.That(updateProgressCalls.Count, Is.EqualTo(ExpectedGenerations));
@@ -181,11 +199,14 @@ namespace IntSort.Test
             /// <param name="chunkFiles">The file names of the chunk files to be used for this test. These
             /// files do not actually need to exist.</param>
             /// <param name="mergeCount">The number of files to merge at a time when testing</param>
+            /// <param name="startingGeneration">The number that will be used for the first generation of merges</param>
+            /// <param name="deleteIntermediate">true if the intermediate files are to be deleted after every
+            /// round of merges, otherwise false</param>
             /// <param name="updateProgress">A method that will be called to update integer merging progress. The 
             /// generation number and number of integers that have been merged so far will be passed to this 
             /// method whenever an integer is written an output file.</param>
             private void RunMergeChunkFilesIntoSingleFileTest(List<string> chunkFiles, int mergeCount, 
-                int startingGeneration = 1, Action<int, int> updateProgress = null)
+                int startingGeneration = 1, bool deleteIntermediate = false, Action<int, int> updateProgress = null)
             {
                 const string IntermediateFileTemplate = "gen{0}-{1}.txt";
                 const string OutputDirectory = "output/";
@@ -210,7 +231,7 @@ namespace IntSort.Test
                 //Merge the chunk files
                 List<string> intermediateFiles = chunkFileMerger.MergeChunkFilesIntoSingleFile(chunkFiles,
                     mergeCount, IntermediateFileTemplate, OutputFile, OutputDirectory, startingGeneration,
-                    updateProgress);
+                    deleteIntermediate, updateProgress);
 
                 //Verify that the expected intermediate files were created
                 Assert.That(intermediateFiles, Is.EquivalentTo(expectedIntermediateFiles.SelectMany(fileGroup => fileGroup)));
@@ -225,6 +246,8 @@ namespace IntSort.Test
 
                 string outputFilePath = Path.Combine(OutputDirectory, OutputFile);
 
+                
+
                 //Verify that any previously-existing output file was deleted
                 mockFileIO.Verify(mock => mock.DeleteFile(It.Is<string>(file => file == outputFilePath)), Times.Once);
 
@@ -236,8 +259,13 @@ namespace IntSort.Test
                     It.Is<string>(originalFile => originalFile == finalMergeFile),
                     It.Is<string>(renamedFile => renamedFile == OutputFile)), Times.Once);
 
+                //Verify intermediate file deletion
+                VerifyIntermediateFileDeletion(mockFileIO, deleteIntermediate, intermediateFiles.Union(chunkFiles).ToList(), 
+                    finalMergeFile);
+
                 mockFileIO.VerifyNoOtherCalls();
                 mockIntegerFileMerger.VerifyNoOtherCalls();
+
             }
 
             /// <summary>
@@ -426,6 +454,35 @@ namespace IntSort.Test
                         It.Is<string>(fileTemplate => fileTemplate == expectedFileTemplate),
                         It.Is<string>(directory => directory == outputDirectory),
                         It.IsAny<Action<int>>()), Times.Once);
+                }
+            }
+
+            /// <summary>
+            /// Verifies whether the intermediate files have been deleted or not
+            /// </summary>
+            /// <param name="mockFileIO">The mock file I/O module</param>
+            /// <param name="deleteIntermediate">true if intermediate files were supposed to be deleted,
+            /// otherwise false</param>
+            /// <param name="intermediateFiles">The intermediate file paths</param>
+            /// <param name="finalMergeFile">The final merge file</param>
+            private void VerifyIntermediateFileDeletion(Mock<IFileIO> mockFileIO, bool deleteIntermediate, 
+                List<string> intermediateFiles, string finalMergeFile)
+            {
+                //Remove the final merge file from the intermediate files. This file will never be deleted, but
+                //will instead be renamed to the output file
+                intermediateFiles = intermediateFiles.Where(file => file != finalMergeFile).ToList();
+
+                if (deleteIntermediate)
+                {
+                    //If intermediate files were to be deleted, verify that they were deleted
+                    intermediateFiles.ForEach(intermediateFile => mockFileIO.Verify(mock => mock.DeleteFile(
+                        It.Is<string>(file => file == intermediateFile)), Times.Once));
+                }
+                else
+                {
+                    //If intermediate files were not to be deleted, verify that they were not deleted
+                    intermediateFiles.ForEach(intermediateFile => mockFileIO.Verify(mock => mock.DeleteFile(
+                        It.Is<string>(file => file == intermediateFile)), Times.Never));
                 }
             }
         }
