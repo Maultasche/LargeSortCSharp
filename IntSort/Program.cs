@@ -84,6 +84,10 @@ namespace IntSort
             //Find the output directory where the output file will be written
             string outputDirectory = fileIO.GetDirectoryFromFilePath(options.OutputFilePath);
 
+            //Indicate to the user that we are retrieving information regarding the input file. This can take a long
+            //time for very large files.
+            DisplayInputFileInfoInProgress();
+
             //Collect information on the input file
             IntegerFileInfo inputFileInfo = integerFileInfoCollector.GetIntegerFileInfo(options.InputFile, (int)options.ChunkSize);
 
@@ -222,7 +226,8 @@ namespace IntSort
 
             
             List<string> mergeFiles = chunkFileMerger.MergeChunkFilesIntoSingleFile(chunkFilePaths, MergeCount, GenFileTemplate, 
-                Path.GetFileName(options.OutputFilePath), outputDirectory, FirstMergeGeneration, updateMergeProgress);
+                Path.GetFileName(options.OutputFilePath), outputDirectory, FirstMergeGeneration, !options.KeepIntermediate,
+                updateMergeProgress);
 
             intermediateFilePaths.AddRange(mergeFiles);
 
@@ -323,6 +328,14 @@ namespace IntSort
 
             Console.WriteLine(string.Format(integerOutput, inputFileInfo.NumOfIntegers));
             Console.WriteLine(string.Format(chunkOutput, inputFileInfo.NumOfChunks));
+        }
+
+        /// <summary>
+        /// Displays and indicator that the program is currently retrieving the input file information
+        /// </summary>
+        private static void DisplayInputFileInfoInProgress()
+        {
+            Console.WriteLine("Determining the number of integers and chunks in the input file...");
         }
 
         /// <summary>
