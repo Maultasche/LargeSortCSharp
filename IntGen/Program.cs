@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using CommandLine;
@@ -32,13 +33,22 @@ namespace IntGen
                 var parseResult = CommandLine.Parser.Default.ParseArguments<CommandLineOptions>(args)
                     .WithParsed(options =>
                     {
+                        //Keep track of when the integer generation operation begins
+                        Stopwatch stopwatch = new Stopwatch();
+                        stopwatch.Start();
+
                         //Create the progress bar
                         var progressBar = CreateProgressBar(options.Count);
 
                         //Generate the integers and pass a method that will update the progress bar
                         GenerateIntegers(options, generatedIntegers => UpdateProgressBar(progressBar, generatedIntegers));
 
-                        Console.WriteLine();
+                        OnProgressBarCompleted();
+
+                        //Display the amount of time it took to perform the entire integer generation operation
+                        stopwatch.Stop();
+
+                        DisplayElapsedTime(stopwatch.Elapsed);
                     })
                     .WithNotParsed(errors => Environment.ExitCode = -1);
             }
@@ -72,6 +82,50 @@ namespace IntGen
             var progressBar = new ProgressBar(Convert.ToInt32(totalIntegers), "Generating Integers...", options);
 
             return progressBar;
+        }
+
+        /// <summary>
+        /// Displays the amount of time that elapsed from the start of the entire sorting operation
+        /// to the end
+        /// </summary>
+        /// <param name="elapsedTime">The amount of time that elapsed</param>
+        private static void DisplayElapsedTime(TimeSpan elapsedTime)
+        {
+            string timeSpanString = string.Empty;
+
+            if (elapsedTime.TotalSeconds < 1.0)
+            {
+                timeSpanString = String.Format("{0}ms", elapsedTime.Milliseconds);
+            }
+            else if (elapsedTime.TotalMinutes < 1.0)
+            {
+                timeSpanString = String.Format("{0}s", elapsedTime.Seconds);
+            }
+            else if (elapsedTime.TotalHours < 1.0)
+            {
+                timeSpanString = String.Format("{0}m:{1:D2}s", elapsedTime.Minutes, elapsedTime.Seconds);
+            }
+            else
+            {
+                timeSpanString = String.Format("{0}h:{1:D2}m:{2:D2}s", (int)elapsedTime.TotalHours, elapsedTime.Minutes,
+                    elapsedTime.Seconds);
+            }
+
+            Console.WriteLine(string.Format("Done in {0}", timeSpanString));
+        }
+
+        /// <summary>
+        /// Takes care of the cleanup work that is necessary after the progress bar completes
+        /// </summary>
+        /// <remarks>
+        /// When the progress bar completes, the cursor remains on the message above the progress bar.
+        /// So as a result, any subsequent output will be overlaid on the progress bar. This method
+        /// corrects the cursor position so that any subsequent output will be shown below the progress
+        /// bar.
+        /// </remarks>
+        static void OnProgressBarCompleted()
+        {
+            Console.CursorTop += 2;
         }
 
         /// <summary>
