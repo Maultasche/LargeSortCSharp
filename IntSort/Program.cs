@@ -204,27 +204,25 @@ namespace IntSort
 
             Action<int, int> updateMergeProgress = (int gen, int integersProcessed) =>
             {
-                if (mergeProgressBars.ContainsKey(gen))
-                {
-                    bool stepsComplete = UpdateProgressBar(mergeProgressBars[gen], integersProcessed);
-
-                    if(stepsComplete)
-                    {
-                        OnProgressBarCompleted();
-
-                        //Display the results of the merge operation. We can calculate the number of output
-                        //files that will result from each merge generation
-                        int mergedFilesCount = CalculateNumberOfGenerationOutputFiles(chunkFiles.Count, MergeCount, 
-                            gen - FirstMergeGeneration + 1);
-
-                        DisplayGenMergeResults(gen, mergedFilesCount);
-                    }
-                }
-                else
+                if (!mergeProgressBars.ContainsKey(gen))
                 {
                     //Create a progress bar for the current generation
-                    mergeProgressBars[gen] = CreateProgressBar(inputFileInfo.NumOfIntegers, 
+                    mergeProgressBars[gen] = CreateProgressBar(inputFileInfo.NumOfIntegers,
                         string.Format(MergeProgressMessage, gen - 1));
+                }
+
+                bool stepsComplete = UpdateProgressBar(mergeProgressBars[gen], integersProcessed);
+
+                if (stepsComplete)
+                {
+                    OnProgressBarCompleted();
+
+                    //Display the results of the merge operation. We can calculate the number of output
+                    //files that will result from each merge generation
+                    int mergedFilesCount = CalculateNumberOfGenerationOutputFiles(chunkFiles.Count, MergeCount,
+                        gen - FirstMergeGeneration + 1);
+
+                    DisplayGenMergeResults(gen, mergedFilesCount);
                 }
             };
 
