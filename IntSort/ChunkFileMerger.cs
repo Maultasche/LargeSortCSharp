@@ -75,8 +75,13 @@ namespace IntSort
             fileIO.DeleteFile(outputFilePath);
 
             //Rename the remaining file to the output file
-            fileIO.RenameFile(remainingFiles[0], outputFile);
-
+            //Note that an empty input file will not result in a remaining file, so we have to check to see
+            //if there are any remaining files
+            if(remainingFiles.Count > 0)
+            {
+                fileIO.RenameFile(remainingFiles[0], outputFile);
+            }
+            
             return intermediateFiles;
         }
     }

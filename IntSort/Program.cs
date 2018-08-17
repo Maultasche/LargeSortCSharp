@@ -132,7 +132,11 @@ namespace IntSort
             List<string> chunkFiles = CreateSortedChunkFiles(options.InputFile, (int)options.ChunkSize,
                 outputDirectory, chunkFileTemplate, updateChunkProgress);
 
-            OnProgressBarCompleted();
+            if(chunkFiles.Count > 0)
+            {
+                OnProgressBarCompleted();
+            }
+            
 
             DisplayChunkFileCreationResults(chunkFiles.Count);
 
