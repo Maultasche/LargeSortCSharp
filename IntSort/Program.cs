@@ -278,7 +278,6 @@ namespace IntSort
             {
                 BackgroundCharacter = '\u2593',
                 ProgressBarOnBottom = true,
-                DisplayTimeInRealTime = false,
                 ForegroundColor = ConsoleColor.Gray,
                 ForegroundColorDone = ConsoleColor.Gray,
                 BackgroundColor = ConsoleColor.DarkGray

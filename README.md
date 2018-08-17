@@ -81,7 +81,7 @@ The following diagram is a visualization of the sorting strategy.
 In addition to the suite of unit tests, I ran the finished product through some tests to verify that the entire thing works under a variety of scenarios.
 
 - Test sorting an empty file [Passed]
-- Test sorting a file with a single number
+- Test sorting a file with a single number [Passed]
 - Test sorting 20 numbers, where we can easily verify all the numbers
 - Test sorting an input file where T < N, and verify that the correct intermediate files were produced
 - Test sorting an input file where T === N, and verify that the correct intermediate files were produced
