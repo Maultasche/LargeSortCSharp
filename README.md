@@ -82,14 +82,14 @@ In addition to the suite of unit tests, I ran the finished product through some 
 
 - Test sorting an empty file [Passed]
 - Test sorting a file with a single number [Passed]
-- Test sorting 20 numbers, where we can easily verify all the numbers
-- Test sorting an input file where T < N, and verify that the correct intermediate files were produced
-- Test sorting an input file where T === N, and verify that the correct intermediate files were produced
-- Test sorting an input file where T > N, and verify that the correct intermediate files were produced
-- Test sorting an input file where T > P * N, and verify that the correct intermediate files were produced 
-- Test sorting an input file where T == (P * N) + 1, and verify that P + 1 intermediate sorted chunk files were produced, with the first P files having N sorted integers in them, and the P + 1 file having one integer in it. The first round of merging should produce two intermediate, the first file with P * N sorted integers in it and the second file having a single integer in it. After the second round of merging, the integer in the second file should be merged with the other integers in the final output file.
-- Test sorting a very large number of integers. A billion integers would suffice.
-- Test sorting using small (1,000), moderate (10,000), and large numbers for N (1,000,000)
+- Test sorting 20 numbers, where we can easily verify all the numbers [Passed]
+- Test sorting an input file where T < N, and verify that the correct intermediate files were produced [Passed]
+- Test sorting an input file where T === N, and verify that the correct intermediate files were produced [Passed]
+- Test sorting an input file where T > N, and verify that the correct intermediate files were produced [Passed]
+- Test sorting an input file where T > P * N, and verify that the correct intermediate files were produced [Passed]
+- Test sorting an input file where T == (P * N) + 1, and verify that P + 1 intermediate sorted chunk files were produced, with the first P files having N sorted integers in them, and the P + 1 file having one integer in it. The first round of merging should produce two intermediate, the first file with P * N sorted integers in it and the second file having a single integer in it. After the second round of merging, the integer in the second file should be merged with the other integers in the final output file. [Passed]
+- Test sorting a very large number of integers. A billion integers would suffice. [Passed]
+- Test sorting using small (1,000), moderate (10,000), and large numbers for N (1,000,000) [Passed]
 
 ## Running Tests
 
