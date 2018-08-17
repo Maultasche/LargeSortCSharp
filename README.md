@@ -11,7 +11,7 @@ This project is a fun exercise in sorting a very large number of integers while 
 
 How do we sort a bunch of integers without loading them all into memory at any given time? The answer is files: we produce a lot of sorted intermediate files and them merge them together one integer at at time to produce the final sorted output file.
 
-I originally saw this listed somewhere as an interview question, and while I figured out the answer fairly quickly ("Store the integers in files, sort them in chunks, and then merge the sorted chunks"), I found myself pondering the implementation details. In other words, how would I implement that solution?. After thinking about the implementation details and coming up with a strategy, I decided to go ahead and implement it and see if the solution in my head would actually work.
+I originally saw this listed somewhere as an interview question, and while I figured out the answer fairly quickly ("Store the integers in files, sort them in chunks, and then merge the sorted chunks"), I found myself pondering the implementation details. In other words, how would I implement that solution? After thinking about the implementation details and coming up with a strategy, I decided to go ahead and implement it and see if the solution in my head would actually work.
 
 The solution did work.
 
@@ -24,7 +24,7 @@ This project consists of two runnable programs.
 2. A program for sorting the integers
   - Accepts the input file and the maximum number of integers to load into memory at any time during the process (aka the chunk size)
   - Writes the final result to an output file, the name of which is also an input parameter
-  - Accepts a parameter which will tell the sorting program to not erase the intermediate files when it is done
+  - Accepts a parameter which will tell the sorting program whether to erase the intermediate files when it is done
   - The input file is assumed to have one integer per line and will produce an output file with one integer per line
 
 ## Current Status
@@ -37,7 +37,7 @@ The memory usage was satisfactory at 16-18 MB, most of which was probably used b
 
 ## Running the Integer Generator and Sorting Tools
 
-To run the integer generation and sorting tools, you'll need to have (.NET Core runtime)[https://www.microsoft.com/net/download] installed. .NET Core 2 was used for the development of this project, but later versions of .NET Core will likely be able to run this project as well.
+To run the integer generation and sorting tools, you'll need to have [.NET Core runtime](https://www.microsoft.com/net/download) installed. .NET Core 2 was used for the development of this project, but later versions of .NET Core will likely be able to run this project as well.
 
 To generate integers, use the integer generation tool to generate random integers, run ```dotnet run --project IntGen``` from the root directory. The following example will generate 10,000 integers between -1,000 and 1,000 and write the results into data/randomNumbers.txt.
 
@@ -45,7 +45,7 @@ To generate integers, use the integer generation tool to generate random integer
 dotnet run --project IntGen --count 10000 --lowerBound -1000 --upperBound 1000 data\randomIntegers.txt
 ```
 
-To sort a text file containing an integer on each line, run ```dotnet run --project IntSort```. The following example will read the integers in data/randomNumbers.txt in chunks of 100, meaning that no more than 100 integers will be in memory at any given time. The integers will be sorted using intermediate files and then merged into a single file without keeping more than 100 integers in memory at a time. The sorted integers will be written to output/sortedIntegers.txt.
+To sort a text file containing an integer on each line, run ```dotnet run --project IntSort```. The following example will read the integers in data/randomNumbers.txt in chunks of 100, meaning that no more than 100 integers will be in memory at any given time. The integers will be sorted and stored in intermediate files, which will then merged into a single file without keeping more than 100 integers in memory at a time. The sorted integers will be written to output/sortedIntegers.txt.
 
 The ```--keepIntermediate``` flag will leave the intermediate files in place so that they can be examined. If you remove the ```--keepIntermediate``` flag, all the intermediate files will be cleaned up after the program completes, and just the final output file will remain.
 
@@ -70,7 +70,7 @@ If only N integers can be loaded into memory at any given time, but the total nu
 7. Repeat Steps 5 and 6 until all F output files have been processed. The resulting sorted files will be referred to as Gen 2 files. 
 8. At this point, we may only have one Gen 2 file, in which case we are be finished, but if F > P, we'll have multiple Gen 2 files where the size of each file is P * N integers. In that case, repeat Steps 5 - 7 until all we only produce a single output file (the Gen R file, where R is the number of intermediate file iterations we went through). 
 
-Each intermediate file iteration will reduce the number of intermediate files by a factor of P, so the performance of the merging process will be O(N Log(N))
+Each intermediate file iteration will reduce the number of intermediate files by a factor of P, so the performance of the merging process is O(N Log(N))
 
 The following diagram is a visualization of the sorting strategy.
 
@@ -103,7 +103,7 @@ In a bash shell:
 
 You can also run the tests using the Test Explorer or Test menu in Visual Studio.
 
-##Understanding the Code
+## Understanding the Code
 
 If you're interested in understanding the structure of the code, there's documentation describing how the code is structured.
 
