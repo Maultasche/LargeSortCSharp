@@ -1,10 +1,5 @@
 # Sorting a Large Number of Integers
 
-This is the the same problem from the [NodeLargeSort](https://github.com/Maultasche/NodeLargeSort) project, but solved using C#
-
-It is essentially a version of merge sort that uses files and has variable-length merge chunks, where chunks can be 
-merged together in any number instead of two at a time like the typical merge sort.
-
 ## Overview
 
 This project is a fun exercise in sorting a very large number of integers while keeping only a subset of integers in memory at any particular time. The number of integers to load and keep in memory at any given time is known as "chunk", and all the integers will be sorted and placed in an output file without ever storing more than one chunk of integers in memory.
@@ -14,6 +9,9 @@ How do we sort a bunch of integers without loading them all into memory at any g
 I originally saw this listed somewhere as an interview question, and while I figured out the answer fairly quickly ("Store the integers in files, sort them in chunks, and then merge the sorted chunks"), I found myself pondering the implementation details. In other words, how would I implement that solution? After thinking about the implementation details and coming up with a strategy, I decided to go ahead and implement it and see if the solution in my head would actually work.
 
 The solution did work.
+
+It is essentially a version of merge sort that uses files and has variable-length merge chunks, where chunks can be 
+merged together in any number instead of two at a time like the typical merge sort.
 
 This project consists of two runnable programs.
 
@@ -26,6 +24,8 @@ This project consists of two runnable programs.
   - Writes the final result to an output file, the name of which is also an input parameter
   - Accepts a parameter which will tell the sorting program whether to erase the intermediate files when it is done
   - The input file is assumed to have one integer per line and will produce an output file with one integer per line
+
+I've also implemented the same solution in Node.js in the [NodeLargeSort](https://github.com/Maultasche/NodeLargeSort) project, and in Elixir in the [ElixirLargeSort] https://github.com/Maultasche/ElixirLargeSort project. I like to reimplement this project every time I learn a new language.
 
 ## Current Status
 
