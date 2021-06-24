@@ -58,7 +58,7 @@ namespace LargeSort.Shared.Test
             public void TestWithNestedDirectories()
             {
                 const string TestFilePath = "bananas/files/somefile.txt";
-                const string ExpectedDirectory = "bananas\\files";
+                const string ExpectedDirectory = "bananas/files";
 
                 TestWithFilePath(TestFilePath, ExpectedDirectory);
             }
@@ -70,7 +70,7 @@ namespace LargeSort.Shared.Test
             public void TestWithRelativeDirectory()
             {
                 const string TestFilePath = "../apples/somefile.txt";
-                const string ExpectedDirectory = "..\\apples";
+                const string ExpectedDirectory = "../apples";
 
                 TestWithFilePath(TestFilePath, ExpectedDirectory);
             }
@@ -95,10 +95,10 @@ namespace LargeSort.Shared.Test
             {
                 const string TestFilePath = "";
 
-                //This should throw an ArgumentException
+                //This should return a null
                 IFileIO fileIO = new FileIO();
 
-                Assert.That(() => fileIO.GetDirectoryFromFilePath(TestFilePath), Throws.ArgumentException);
+                Assert.That(() => fileIO.GetDirectoryFromFilePath(TestFilePath), Is.Null);
             }
 
             /// <summary>
