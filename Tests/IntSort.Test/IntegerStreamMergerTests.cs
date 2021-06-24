@@ -177,7 +177,6 @@ namespace IntSort.Test
             public void TestMergeIntegerStreamsSingleInputStream()
             {
                 const int StandardStreamLength = 10;
-                const int StreamNumber = 10;
 
                 //Create the test data
                 List<List<int>> testIntegers = Enumerable.Range(0, 1)
