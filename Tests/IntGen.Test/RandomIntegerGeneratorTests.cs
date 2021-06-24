@@ -52,7 +52,7 @@ namespace IntGen.Test
             [Test]
             public void TestNegativeIntegerBounds()
             {
-                //Test with positive bounds
+                //Test with negativ bounds
                 TestRandomIntegerGenerator(-10, -1, 1000);
                 TestRandomIntegerGenerator(-50, -8, 1000);
                 TestRandomIntegerGenerator(-100, -90, 1000);
@@ -66,11 +66,11 @@ namespace IntGen.Test
             [Test]
             public void TestPositiveNegativeIntegerBounds()
             {
-                //Test with positive bounds
-                TestRandomIntegerGenerator(-2, -2, 1000);
-                TestRandomIntegerGenerator(-1, 0, 1000);
-                TestRandomIntegerGenerator(-100, -10, 1000);
-                TestRandomIntegerGenerator(-32423, -8564, 1000);
+                //Test with positive and negative bounds
+                TestRandomIntegerGenerator(-2, 2, 1000);
+                TestRandomIntegerGenerator(-1, 10, 1000);
+                TestRandomIntegerGenerator(-100, 100, 1000);
+                TestRandomIntegerGenerator(-32423, 8564, 1000);
             }
 
             /// <summary>
