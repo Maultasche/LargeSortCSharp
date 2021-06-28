@@ -1,22 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.2.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
-    <PackageReference Include="ShellProgressBar" Version="4.0.0" />
+    <PackageReference Include="CommandLineParser" Version="2.2.1"/>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1"/>
+    <PackageReference Include="ShellProgressBar" Version="5.1.0"/>
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\LargeSort.Shared\LargeSort.Shared.csproj" />
+    <ProjectReference Include="..\LargeSort.Shared\LargeSort.Shared.csproj"/>
   </ItemGroup>
-
 </Project>

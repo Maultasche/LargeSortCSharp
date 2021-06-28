@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace LargeSort.Shared
 {
@@ -35,13 +35,19 @@ namespace LargeSort.Shared
         /// <returns>The current console settings</returns>
         public static ConsoleInfo CurrentInfo()
         {
+            var color = Console.BackgroundColor;
+
             ConsoleInfo currentSettings = new ConsoleInfo()
             {
-                BackgroundColor = Console.BackgroundColor,
-                CursorSize = Console.CursorSize,
-                CursorVisible = Console.CursorVisible,
+                BackgroundColor = Console.BackgroundColor,                
                 ForegroundColor = Console.ForegroundColor
             };
+
+            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                currentSettings.CursorVisible = Console.CursorVisible;
+                currentSettings.CursorSize = Console.CursorSize;
+            }
 
             return currentSettings;
         }
@@ -52,10 +58,18 @@ namespace LargeSort.Shared
         /// <param name="consoleSettings">The console settings to be restored</param>
         public static void RestoreSettings(ConsoleInfo consoleSettings)
         {
-            Console.BackgroundColor = consoleSettings.BackgroundColor;
-            Console.CursorSize = consoleSettings.CursorSize;
-            Console.CursorVisible = consoleSettings.CursorVisible;
+            Console.BackgroundColor = consoleSettings.BackgroundColor;            
             Console.ForegroundColor = consoleSettings.ForegroundColor;
+
+            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Console.CursorSize = consoleSettings.CursorSize;
+                Console.CursorVisible = consoleSettings.CursorVisible;
+            }
+            else
+            {
+                Process.Start("tput", "cnorm -- normal");
+            }
         }
     }
 }

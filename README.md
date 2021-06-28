@@ -25,7 +25,7 @@ This project consists of two runnable programs.
   - Accepts a parameter which will tell the sorting program whether to erase the intermediate files when it is done
   - The input file is assumed to have one integer per line and will produce an output file with one integer per line
 
-I've also implemented the same solution in Node.js in the [NodeLargeSort](https://github.com/Maultasche/NodeLargeSort) project, and in Elixir in the [ElixirLargeSort] https://github.com/Maultasche/ElixirLargeSort project. I like to reimplement this project every time I learn a new language.
+I've also implemented the same solution in Node.js in the [NodeLargeSort](https://github.com/Maultasche/NodeLargeSort) project, and in Elixir in the [ElixirLargeSort](https://github.com/Maultasche/ElixirLargeSort) project. I like to reimplement this project every time I learn a new language.
 
 ## Current Status
 
@@ -37,12 +37,12 @@ The memory usage was satisfactory at 16-18 MB, most of which was probably used b
 
 ## Running the Integer Generator and Sorting Tools
 
-To run the integer generation and sorting tools, you'll need to have [.NET Core runtime](https://www.microsoft.com/net/download) installed. .NET Core 2 was used for the development of this project, but later versions of .NET Core will likely be able to run this project as well.
+To run the integer generation and sorting tools, you'll need to have [.NET Core runtime](https://www.microsoft.com/net/download) installed. .NET Core 2 was used for the development of this project, but it was later upgraded to .NET 5.0.
 
 To generate integers, use the integer generation tool to generate random integers, run ```dotnet run --project IntGen``` from the root directory. The following example will generate 10,000 integers between -1,000 and 1,000 and write the results into data/randomNumbers.txt.
 
 ```
-dotnet run --project IntGen --count 10000 --lowerBound -1000 --upperBound 1000 data\randomIntegers.txt
+dotnet run --project IntGen --count 10000 --lowerBound -1000 --upperBound 1000 data/randomIntegers.txt
 ```
 
 To sort a text file containing an integer on each line, run ```dotnet run --project IntSort```. The following example will read the integers in data/randomNumbers.txt in chunks of 100, meaning that no more than 100 integers will be in memory at any given time. The integers will be sorted and stored in intermediate files, which will then merged into a single file without keeping more than 100 integers in memory at a time. The sorted integers will be written to output/sortedIntegers.txt.
